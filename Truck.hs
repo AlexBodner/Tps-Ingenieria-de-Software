@@ -8,9 +8,8 @@ import Route
 data Truck = Tru [ Stack ] Route deriving (Eq, Show)
 
 newT :: Int -> Int -> Route -> Truck  -- construye un camion según una cantidad de bahias, la altura de las mismas y una ruta
-newT bahias altura ruta = (Tru (replicate bahias (createStack altura)) ruta)
+newT bahias altura ruta = Tru [newS altura | _ <- [1..bahias]] ruta
 -- Crea una lista de 'bahias' (stacks), cada uno con altura 'altura'
-
 
 freeCellsT :: Truck -> Int            -- responde la celdas disponibles en el camion
 freeCellsT (Tru stack_list _) = sum [freeCellsS n | n <- stack_list] -- a cada stack de los stacks del camion le aplica la funcion freeCellsS, y suma todo
