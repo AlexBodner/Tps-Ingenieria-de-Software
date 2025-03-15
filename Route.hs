@@ -9,7 +9,7 @@ newR routeList = Rou routeList
 
 inOrderR :: Route -> String -> String -> Bool  -- indica si la primer ciudad consultada esta antes que la segunda ciudad en la ruta
 inOrderR (Rou cities) city1 city2 | ind1 /= Nothing && ind2 /= Nothing = ind1 < ind2
-                           | otherwise = False 
+                           | otherwise = False -- tirar error si no estan los indices
                     where  
                         ind1 = elemIndex city1 cities 
                         ind2 = elemIndex city2 cities
