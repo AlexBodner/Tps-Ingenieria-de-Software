@@ -26,9 +26,5 @@ loadIntoFirstAvailable ( Tru (primerStack:restoStacks) ruta) palet -- Si la list
   | otherwise = primerStack : loadIntoFirstAvailable (Tru restoStacks ruta) palet -- Si no se puede apilar en el 1er stack, se separa ese stack y se llama recursivamente con el resto de los stacks
   -- eventualmente si no se puede con ningun stack, la variable restoStacks va a ser [] y se termina la recursion
 
-
-unloadT :: Truck -> String -> Truck   -- responde un camion al que se le han descargado los paletes que podían descargarse en la ciudad
-unloadT (Tru stack_list ruta)  city = Tru([popS n  city| n <- stack_list ]) ruta
-
 netT :: Truck -> Int                  -- responde el peso neto en toneladas de los paletes en el camion
 netT  (Tru stack_list ruta) = sum [netS s| s <- stack_list ] 
