@@ -20,10 +20,11 @@ stackS (Sta palets cap) palet | length palets < cap && netS (Sta palets cap) + n
 netS :: Stack -> Int                      -- responde el peso neto de los paletes en la pila
 netS (Sta palets _) = sum (map netP palets) -- map aplica netP a cada uno de los elementos de la lista 'palets'
 
+
 holdsS :: Stack -> Palet -> Route -> Bool -- indica si la pila puede aceptar el palet considerando las ciudades en la ruta
 holdsS (Sta [] _) _ _ = True  -- Si la pila está vacía, acepta cualquier palet
 holdsS (Sta palets cap) palet ruta =
-  length palets < cap  -- Verifica que haya espacio
+  freeCellsS (Sta palets cap)>0  -- Verifica que haya espacio
   && netS (Sta palets cap) + netP palet <= 10  -- Verifica que no supere las 10 toneladas
   && inOrderR ruta (destinationP palet) (destinationP (head palets))  -- Quiero que el palet que voy a agregar se baje antes que el head. 
 

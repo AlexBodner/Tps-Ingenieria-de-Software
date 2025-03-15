@@ -26,7 +26,9 @@ main = do
   assert (netS s2 == 5) "netS calcula bien el peso neto"
 
   let s3 = stackS s2 palet3
-  assert (length s3 > 0) "stackS apila correctamente 3 palets"
+  
+  assert (freeCellsS s3 == 0) "stackS no tiene celdas restantes"
+
 
   assert (not (holdsS s1 palet2 ruta)) "holdsS NO acepta palet con destino despues"
 
