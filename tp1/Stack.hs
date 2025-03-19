@@ -8,7 +8,8 @@ data Stack = Sta [ Palet ] Int deriving (Eq, Show) -- Stack es un tipo de dato. 
 -- lista de Palets y un Int que debe soportar Eq y Show.
 
 newS :: Int -> Stack                      -- construye una Pila con la capacidad de palets indicada 
-newS cap = Sta [] cap
+newS cap    | cap <=0 = error "Un Stack no puede tener capacidad menor o igual a 0."
+            | otherwise Sta [] cap
                   
 freeCellsS :: Stack -> Int                -- responde la celdas disponibles en la pila
 freeCellsS (Sta palets cap) = cap - length palets

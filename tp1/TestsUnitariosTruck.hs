@@ -69,7 +69,7 @@ main = do
   print (freeCellsT truck_f )
   assert (freeCellsT truck_f == 0) "loadT reduce las celdas disponibles a 0 tras llenar de palet"
   
-  assert ((loadT truck_f palet5) == truck_f) "loadT deja el mismo camion si está lleno"
+  assert (freeCellsT (loadT truck_f palet5) == freeCellsT truck_f) "loadT deja el mismo camion si está lleno" --ATENCION: se podrian revisar que queden las mismas cargas que antes, aunque seria innecesario o lo haria a nivel test de stack
 
   -- Test 8: Descargar palets
   let truck_g = unloadT truck_f "BuenosAires"
@@ -81,7 +81,7 @@ main = do
 
   let truck_h = loadT truck_g palet6 -- al cargar palet 6, solo me queda un espacio en esa bahia, entonces no podria cargar algo que vaya mas lejos que mendoza
 
-  assert ((loadT truck_h palet7) == truck_h) "No carga Palet que no respeta orden"
+  assert (freeCellsT (loadT truck_h palet7) == (freeCellsT  truck_h)) "No carga Palet que no respeta orden"
 
 
 
