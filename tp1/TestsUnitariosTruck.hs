@@ -2,6 +2,7 @@ import Truck
 import Palet
 import Route
 import Stack
+import TestExceptions (testF)
 
 -- Crear palets
 palet1 = newP "BuenosAires" 3
@@ -22,6 +23,8 @@ assert cond msg = putStrLn $ if cond then "✅ OK: " ++ msg else "❌ Falló: " 
 
 main :: IO ()
 main = do
+
+
   let truck = newT 2 3 ruta  -- Camión con 2 bahías, cada una con altura 3
 
   -- Test 1: Crear camión
@@ -50,31 +53,30 @@ main = do
 
   -- Test 7: Llenamos el camion de palets
   let truck_a = loadT truck2 palet1 -- Baires
-  print (freeCellsT truck_a )
 
+  assert (freeCellsT truck_a == 5) "Load T carga bien con 3 bahias de altura 2"
   let truck_b = loadT truck_a palet1
-  print (freeCellsT truck_b )
+  assert (freeCellsT truck_b == 4) "Load T carga bien con 3 bahias de altura 2"
 
   let truck_c = loadT truck_b palet4--Cordoba
-  print (freeCellsT truck_c )
+  assert (freeCellsT truck_c == 3) "Load T carga bien con 3 bahias de altura 2"
 
   let truck_d = loadT truck_c palet4
-  print (freeCellsT truck_d )
+  assert (freeCellsT truck_d == 2) "Load T carga bien con 3 bahias de altura 2"
 
   let truck_e = loadT truck_d palet5--Chubut
-  print (freeCellsT truck_e )
+  assert (freeCellsT truck_e == 1) "Load T carga bien con 3 bahias de altura 2"
 
   let truck_f = loadT truck_e palet5
 
-  print (freeCellsT truck_f )
   assert (freeCellsT truck_f == 0) "loadT reduce las celdas disponibles a 0 tras llenar de palet"
   
-  assert (freeCellsT (loadT truck_f palet5) == freeCellsT truck_f) "loadT deja el mismo camion si está lleno" --ATENCION: se podrian revisar que queden las mismas cargas que antes, aunque seria innecesario o lo haria a nivel test de stack
+  assert ((freeCellsT (loadT truck_f palet5) == freeCellsT truck_f) && (netT (loadT truck_f palet5) == freeCellsT truck_f)) "loadT deja el mismo camion si está lleno" 
 
   -- Test 8: Descargar palets
   let truck_g = unloadT truck_f "BuenosAires"
-  print (netT truck_g)
   assert (netT truck_g == 8) "Unload descargó bien el peso"
+  assert (freeCellsT truck_g == 4) "Unload descargó bien el peso"
 
 
   -- Test 9: Cargar palets que no pueden ser por el orden
@@ -84,4 +86,6 @@ main = do
   assert (freeCellsT (loadT truck_h palet7) == (freeCellsT  truck_h)) "No carga Palet que no respeta orden"
 
 
+  -- Test: Crear camion con altura 0 falla (efectivamente se lanza un error, que por algun motivo testF no captura, por lo que lo dejamos comentado)
+  --  print((newT 2 0 ruta)) 
   putStrLn "\n✅ Todos los tests para Truck finalizados."
