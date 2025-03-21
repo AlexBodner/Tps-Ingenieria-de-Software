@@ -84,5 +84,4 @@ main = do
   assert (freeCellsT (loadT truck_h palet7) == (freeCellsT  truck_h)) "No carga Palet que no respeta orden"
 
 
-
   putStrLn "\n✅ Todos los tests para Truck finalizados."
