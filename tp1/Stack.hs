@@ -15,7 +15,7 @@ freeCellsS :: Stack -> Int                -- responde la celdas disponibles en l
 freeCellsS (Sta palets cap) = cap - length palets
 
 stackS :: Stack -> Palet -> Stack         -- apila el palet indicado en la pila
-stackS (Sta palets cap) palet | length palets < cap && netS (Sta palets cap) + netP palet <= 10 = Sta (palet:palets) cap
+stackS (Sta palets cap) palet | freeCellsS (Sta palets cap)>0 && netS (Sta palets cap) + netP palet <= 10 = Sta (palet:palets) cap
                               | otherwise = error "No hay lugar en la pila"
 
 netS :: Stack -> Int                      -- responde el peso neto de los paletes en la pila
