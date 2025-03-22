@@ -19,6 +19,7 @@ stackS (Sta palets cap) palet | freeCellsS (Sta palets cap)>0 && netS (Sta palet
                               | otherwise = error "No hay lugar en la pila"
 
 netS :: Stack -> Int                      -- responde el peso neto de los paletes en la pila
+netS (Sta [] _) = 0  -- Si la pila está vacía, el peso neto es 0
 netS (Sta palets _) = sum (map netP palets) -- map aplica netP a cada uno de los elementos de la lista 'palets'
 
 
@@ -28,6 +29,7 @@ holdsS (Sta palets cap) palet ruta =
   freeCellsS (Sta palets cap)>0  -- Verifica que haya espacio
   && netS (Sta palets cap) + netP palet <= 10  -- Verifica que no supere las 10 toneladas
   && inOrderR ruta (destinationP palet) (destinationP (head palets))  -- Quiero que el palet que voy a agregar se baje antes que el head. 
+
 
 popS :: Stack -> String -> Stack          -- quita del tope los paletes con destino en la ciudad indicada
 -- Entrada => Stack: La pila de palets actual, String: La ciudad donde se están descargando palets.
