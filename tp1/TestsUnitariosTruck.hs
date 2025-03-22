@@ -71,12 +71,12 @@ main = do
 
   assert (freeCellsT truck_f == 0) "loadT reduce las celdas disponibles a 0 tras llenar de palet"
   
-  assert ((freeCellsT (loadT truck_f palet5) == freeCellsT truck_f) && (netT (loadT truck_f palet5) == freeCellsT truck_f)) "loadT deja el mismo camion si está lleno" 
+  assert ((freeCellsT (loadT truck_f palet5) == freeCellsT truck_f) && (netT (loadT truck_f palet5) == netT truck_f)) "loadT deja el mismo camion si está lleno" 
 
   -- Test 8: Descargar palets
   let truck_g = unloadT truck_f "BuenosAires"
   assert (netT truck_g == 8) "Unload descargó bien el peso"
-  assert (freeCellsT truck_g == 4) "Unload descargó bien el peso"
+  assert (freeCellsT truck_g == 2) "Unload descargó bien el palet."
 
 
   -- Test 9: Cargar palets que no pueden ser por el orden
@@ -86,6 +86,29 @@ main = do
   assert (freeCellsT (loadT truck_h palet7) == (freeCellsT  truck_h)) "No carga Palet que no respeta orden"
 
 
-  -- Test: Crear camion con altura 0 falla (efectivamente se lanza un error, que por algun motivo testF no captura, por lo que lo dejamos comentado)
+  -- Test 10: Crear camion con altura 0 falla (efectivamente se lanza un error, que por algun motivo testF no captura, por lo que lo dejamos comentado)
   --  print((newT 2 0 ruta)) 
+
+  -- Test: camion de una sola bahia
+  let truck = newT 1 4 ruta  -- Camión con 1 bahías, cada una con altura 4
+  assert (freeCellsT truck == 4) "Se crea correctamente camion de 1 bahia. Las celdas vacias son las correctas"
+  assert (netT truck == 0) "Se crea correctamente camion de 1 bahia. El peso es 0."
+
+  -- Test 2: Cargar palets en orden correcto
+  let truck1 = loadT truck palet3 --Cordoba
+  assert (freeCellsT truck1 == 3) "loadT reduce las celdas disponibles tras cargar un palet"
+  assert (netT truck1 == 5 ) "netT calcula correctamente el peso total con 1 elemento."
+
+  let truck2 = loadT truck1 palet2
+  assert (freeCellsT truck2 == 2) "loadT carga el destino anterior correctamente en la misma pila."
+
+  assert (netT truck2 == 7) "netT calcula correctamente el peso total."
+
+
+  let truck3 = loadT truck2 palet1
+  assert (freeCellsT truck3 == 1 && (netT truck3 == 10)) "Se cargaron correctamente los palets en el orden correcto."
+  assert (netT(loadT truck3 palet1) == 10) "Se queda el mismo peso cuando el peso de la bahia es 10."
+  assert (freeCellsT(loadT truck3 palet1) == 1) "No se carga el palet cuando el peso de la bahia es 10."
+
+
   putStrLn "\n✅ Todos los tests para Truck finalizados."

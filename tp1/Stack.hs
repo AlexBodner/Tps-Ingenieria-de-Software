@@ -24,7 +24,7 @@ netS (Sta palets _) = sum (map netP palets) -- map aplica netP a cada uno de los
 
 
 holdsS :: Stack -> Palet -> Route -> Bool -- indica si la pila puede aceptar el palet considerando las ciudades en la ruta
-holdsS (Sta [] _) _ _ = True  -- Si la pila está vacía, acepta cualquier palet
+holdsS (Sta [] _) pal route = inOrderR route (destinationP pal) ("")  -- Si la pila está vacía, acepta cualquier palet que este en la ruta (para eso usamos inorder que lo calcula)
 holdsS (Sta palets cap) palet ruta =
   freeCellsS (Sta palets cap)>0  -- Verifica que haya espacio
   && netS (Sta palets cap) + netP palet <= 10  -- Verifica que no supere las 10 toneladas

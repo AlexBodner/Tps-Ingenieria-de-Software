@@ -9,7 +9,7 @@ import Control.Monad.RWS (MonadState(put))
 palet1 = newP "BuenosAires"  3 
 palet2 = newP  "Rosario"  2 
 palet3 = newP  "Cordoba" 5 
-palet4 = newP  "Mendoza"  0
+palet4 = newP  "Mendoza"  1
 palet5 = newP  "Rosario"  11
 palet6 = newP  "Cordoba"  8
 palet7 = newP  "Chubut"  1
@@ -48,6 +48,6 @@ main = do
   let s6 = popS s5 "BuenosAires"
   assert (freeCellsS s6 == 3) "popS elimina correctamente palets con destino"
 
-  -- assert((holdsS s0 palet7 ruta) == False) "holdsS no deja apilar un palet cuyo destino no esta en la ruta"
+  assert(not (holdsS s0 palet7 ruta)) "holdsSno acepta palet que no esta en la ruta"
 
   putStrLn "\n✅ Todos los tests finalizados."
