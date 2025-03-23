@@ -3,7 +3,6 @@ import Stack
 import Palet
 import Route
 import TestExceptions (testF)
-import Control.Monad.RWS (MonadState(put))
 
 -- Palets de ejemplo
 palet1 = newP "BuenosAires"  3 
