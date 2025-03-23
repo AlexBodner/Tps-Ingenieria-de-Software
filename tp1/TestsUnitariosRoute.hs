@@ -14,6 +14,10 @@ main = do
   assert(testF (inOrderR r1 "Baires" "MDP")) "Se lanza error cuando la segunda ciudad no pertenece a la ruta de 2 ciudades."
   assert(testF (inOrderR r1 "MDP" "Baires")) "Se lanza error cuando la primera ciudad no pertenece a la ruta de 2 ciudades."
   assert(testF (inOrderR r1 "MDP" "Amsterdam")) "Se lanza error cuando ninguna de las ciudades pertenece a la ruta de 2 ciudades."
+  assert(inRouteR r1 "Baires") "inRouteR encuentra la primera ciudad"
+  assert(inRouteR r1 "Cordoba") "inRouteR encuentra la segunda ciudad"
+  assert(not (inRouteR r1 "New York")) "inRouteR devuelve Falso con una ciudad que no está"
+
   -- Test 3 ciudades
   let r2 = newR ["Baires", "Rosario","Cordoba"] 
   assert(not (inOrderR r2 "Cordoba" "Baires")) "Encuentra que la condicion es Falsa con 3 ciudades. Compara 2 contra 0."

@@ -16,8 +16,8 @@ freeCellsT (Tru stackList _) = sum [freeCellsS n | n <- stackList] -- a cada sta
 
 
 loadT :: Truck -> Palet -> Truck   -- carga un palet en el camion
-loadT (Tru stackList ruta) palet = Tru (loadIntoFirstAvailable (Tru stackList ruta) palet) ruta
-debug = flip trace
+loadT (Tru stackList route) palet | inRouteR route (destinationP palet) == False = error "El destino del palet no se encuentra en la ruta. Pruebe con otro." 
+                                 |  otherwise =  Tru (loadIntoFirstAvailable (Tru stackList route) palet) route
 
 -- Funcion recursiva que descompone la lista en 2: el primer elemento y el resto de la lista. Y se va llamando recursivamente hasta descomponerla toda o encontrar un hueco libre.
 loadIntoFirstAvailable :: Truck -> Palet -> [Stack]

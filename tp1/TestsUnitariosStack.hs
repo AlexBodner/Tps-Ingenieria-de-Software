@@ -48,6 +48,7 @@ main = do
   let s6 = popS s5 "BuenosAires"
   assert (freeCellsS s6 == 3) "popS elimina correctamente palets con destino"
 
-  assert(not (holdsS s0 palet7 ruta)) "holdsSno acepta palet que no esta en la ruta"
+  -- El stack no se encarga de revisar si el palet de input a holdS esta en la ruta, esto se debe a que este chequeo es a nivel camion.
+  assert( (holdsS s0 palet7 ruta)) "holdsS acepta palet que no esta en la ruta si la lista esta vacia, no es trabajo de Stack revisar esto"
 
   putStrLn "\n✅ Todos los tests finalizados."

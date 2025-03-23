@@ -22,9 +22,9 @@ netS :: Stack -> Int                      -- responde el peso neto de los palete
 netS (Sta [] _) = 0  -- Si la pila está vacía, el peso neto es 0
 netS (Sta palets _) = sum (map netP palets) -- map aplica netP a cada uno de los elementos de la lista 'palets'
 
-
+--holdS no chequea si esta en la ruta el palet de input, de esto se ocupa el camion, por lo que se asume que holdS solo recibe palets en la ruta. 
 holdsS :: Stack -> Palet -> Route -> Bool -- indica si la pila puede aceptar el palet considerando las ciudades en la ruta
-holdsS (Sta [] _) pal route = inOrderR route (destinationP pal) ("")  -- Si la pila está vacía, acepta cualquier palet que este en la ruta (para eso usamos inorder que lo calcula)
+holdsS (Sta [] _) pal route = True  -- Si la pila está vacía, acepta cualquier palet que este en la ruta (para eso usamos inorder que lo calcula)
 holdsS (Sta palets cap) palet ruta =
   freeCellsS (Sta palets cap)>0  -- Verifica que haya espacio
   && netS (Sta palets cap) + netP palet <= 10  -- Verifica que no supere las 10 toneladas
