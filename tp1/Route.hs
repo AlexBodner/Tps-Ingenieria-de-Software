@@ -8,6 +8,8 @@ newR :: [ String ] -> Route                    -- construye una ruta segun una l
 newR routeList = Rou routeList
 
 inOrderR :: Route -> String -> String -> Bool  -- indica si la primer ciudad consultada esta antes que la segunda ciudad en la ruta. 
+-- inOrder no necesita verificar que las ciudades esten en la ruta, ya que de ese chequeo se encarga
+-- inRute. El camion llama primero a inRoute y luego a inOrder, por lo que nunca llegara a esta funcion una ciudad que no este en la ruta.
 inOrderR (Rou cities) city1 city2 | ind1 <= ind2 = True
                                   | otherwise = False
                     where  
