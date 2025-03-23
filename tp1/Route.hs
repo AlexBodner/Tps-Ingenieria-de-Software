@@ -18,4 +18,4 @@ inOrderR (Rou cities) city1 city2 | ind1 /= Nothing && ind2 /= Nothing = ind1 <=
                         ind2 = elemIndex city2 cities
 
 inRouteR :: Route -> String -> Bool -- indica si la ciudad consultada esta en la ruta
-inRouteR (Rou cities) city = elem city cities 
+inRouteR (Rou cities) city = elem city cities -- elem verifica si un elemento está dentro de una lista.
