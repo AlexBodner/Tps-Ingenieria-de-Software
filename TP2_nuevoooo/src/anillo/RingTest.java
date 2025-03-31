@@ -25,7 +25,7 @@ public class RingTest {
         assertEquals( "Hola" , new Ring().add( "Hola" ).next().current() );
     }
 
-    @Test void test04CurrentAfterTwoAdds() {
+    @Test void test04CurrentAfterTwoAdds() { // este test me obliga a que add() mueva el current a lo que se agrego. No me quedo parado donde estaba
         assertEquals( 42, new Ring().add( "Hola" )
                                     .add( new Integer( 42 ) )
                                     .current() );

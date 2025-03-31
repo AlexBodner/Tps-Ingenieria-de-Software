@@ -2,6 +2,8 @@ package anillo;
 
 public class Ring {
     private Node current;
+    private Node first;
+    private Node last;
 
     private static class Node {
         Object data;
@@ -25,16 +27,17 @@ public class Ring {
     }
 
     public Ring add( Object cargo ) {
-        if (this.current == null){
-            this.current = new Node(cargo);
-            return this;
-        }
-
         Node n = new Node(cargo);
-        Node right_node = this.current.next;
-        this.current.next = n;
-        n.next = right_node;
-        this.current = n;
+        if (this.current!=null) { // si ya hay cosas en el ring
+            this.last.next = n;
+            this.last = n;
+            n.next = this.first;
+            this.current = n;
+        }else{
+            this.current = n;
+            this.first = this.current;
+            this.last = this.current;
+        }
         return this;
     }
 
