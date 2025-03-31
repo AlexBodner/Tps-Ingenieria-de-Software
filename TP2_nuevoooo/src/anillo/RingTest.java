@@ -107,7 +107,7 @@ public class RingTest {
                                                  .add( LocalDate.now() )
                                                  .next()
                                                  .next()
-                                                 .remove()
-                                                 .current() );
+                                                 .remove() // elimina el 42
+                                                 .current() ); // me tiene que devolver la fecha. Por lo que al eliminar paso al siguiente
     }
 }

@@ -2,16 +2,16 @@ package anillo;
 
 public class Ring {
     private Node current;
-    private Node first;
-    private Node last;
+
 
     private static class Node {
         Object data;
         Node next;
-
+        Node prev;
         Node(Object cargo) {
             this.data = cargo;
             this.next = this; // Circular por defecto
+            this.prev = this;
         }
     }
 
@@ -29,19 +29,31 @@ public class Ring {
     public Ring add( Object cargo ) {
         Node n = new Node(cargo);
         if (this.current!=null) { // si ya hay cosas en el ring
-            this.last.next = n;
-            this.last = n;
-            n.next = this.first;
+            Node prev = this.current.prev;
+
+            n.prev = prev;
+            prev.next = n;
+
+            this.current.prev = n;
+            n.next = this.current;
+
             this.current = n;
-        }else{
-            this.current = n;
-            this.first = this.current;
-            this.last = this.current;
+            return this;
         }
+        this.current = n;
         return this;
     }
 
     public Ring remove() {
-        return null;
+        if (this.current == null){ throw new RuntimeException( "Empty ring" ); }
+        if (this.current == this.current.next){ // solo un elemento en el anillo
+            this.current = null;
+            return this;
+        }
+        Node prev = this.current.prev; // me guardo el prev de current
+        this.current = this.current.next; // avanzo al next de current
+        this.current.prev = prev; // establezco relacion: prev <- next
+        this.current.prev.next = this.current; // establezco relacion: prev -> next
+        return this;
     }
 }
