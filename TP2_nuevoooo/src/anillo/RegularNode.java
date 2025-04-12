@@ -19,7 +19,6 @@ class RegularNode extends Node {
 
     Object current(){ return this.cargo; }
 
-    @Override
     Node add(Object cargo) {
         RegularNode node = new RegularNode(cargo);
         node.setPrev(this.prev);
@@ -29,21 +28,15 @@ class RegularNode extends Node {
         return node;
     }
 
-    @Override
     Node next() {
         return this.next;
     }
 
-    @Override
     Object data() {
         return this.cargo;
     }
 
-    @Override
     Node remove() {
-        if (this.next == this) {
-            return new NullNode(null); // Devuelve un nuevo NullNode
-        }
         this.prev.setNext(this.next);
         this.next.setPrev(this.prev);
         return this.next;
