@@ -74,7 +74,6 @@ public class RingTest {
 
     @Test void test10EmptyaRing() {
         Ring ring = new Ring().add( "Hola" ).remove();
-
         assertThrows( Exception.class, () -> ring.current() );
         assertThrows( Exception.class, () -> ring.next() );
     }
