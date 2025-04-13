@@ -17,18 +17,18 @@ public class NullNode extends Node {
 
     @Override
     Node next() {
-        throw new RuntimeException("Ring is empty");
+        throw new RuntimeException("Cannot call next, Ring is empty");
     }
 
     @Override
     Object data() {
-        throw new RuntimeException("Ring is empty");
+        throw new RuntimeException("Cannot get data, Ring is empty");
     }
 
 
     @Override
     Node remove() {
-        return this; // sigue siendo NullNode
+        throw new RuntimeException("Cannot remove on Empty Ring");
     }
     Node  rollback(Node node){
         return new NullNode();

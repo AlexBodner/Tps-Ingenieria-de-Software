@@ -49,7 +49,7 @@ class RegularNode extends Node {
         this.next.setPrev(this.prev);
         return this.next;
     }
-    Node  rollback(Node node){
+    Node rollback(Node node){
         return node.next();
     }
 }
