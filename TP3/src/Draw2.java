@@ -1,11 +1,13 @@
 public class Draw2 extends Carta{
+    private String tipo;
 
     Draw2(String color) {
         super(color);
+        this.tipo = "draw2";
     }
 
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.color) || otra instanceof Draw2;
+        return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
     }
 
     boolean coincideColor(String color) {
@@ -14,6 +16,10 @@ public class Draw2 extends Carta{
 
     boolean coincideNumero(int numero) {
         return false;
+    }
+
+    boolean coincideTipo(String tipo) {
+        return this.tipo.equals(tipo);
     }
 
     public String toString() {
