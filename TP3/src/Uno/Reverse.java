@@ -1,8 +1,10 @@
+package Uno;
+
 public class Reverse extends Carta{
     private String tipo;
-
+    String color;
     Reverse(String color) {
-        super(color);
+        this.color = color;
         tipo = "reverse";
     }
 
@@ -27,6 +29,6 @@ public class Reverse extends Carta{
     }
 
     public String toString() {
-        return color + " Reverse";
+        return color + " Uno.Reverse";
     }
 }

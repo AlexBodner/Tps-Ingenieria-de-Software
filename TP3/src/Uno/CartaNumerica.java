@@ -1,9 +1,11 @@
+package Uno;
+
 class CartaNumerica extends Carta {
     int numero;
     private String tipo;
-
+    String color;
     CartaNumerica(String color, int numero) {
-        super(color);
+        this.color = color;
         this.numero = numero;
         tipo = "numerica";
     }

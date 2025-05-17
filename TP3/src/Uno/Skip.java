@@ -1,8 +1,10 @@
+package Uno;
+
 public class Skip extends Carta{
     private String tipo;
-
+    String color;
     Skip(String color) {
-        super(color);
+        this.color = color;
         tipo = "skip";
     }
 
@@ -23,7 +25,7 @@ public class Skip extends Carta{
     }
 
     public String toString() {
-        return color + " Skip";
+        return color + " Uno.Skip";
     }
 
 }
