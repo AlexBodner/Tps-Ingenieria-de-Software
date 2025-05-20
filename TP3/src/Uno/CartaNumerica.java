@@ -38,4 +38,6 @@ class CartaNumerica extends Carta {
     public String toString() {
         return color + " " + numero;
     }
+
+    public String getColor() {return color;}
 }

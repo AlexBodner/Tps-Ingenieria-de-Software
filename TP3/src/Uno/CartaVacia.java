@@ -21,4 +21,6 @@ public class CartaVacia extends Carta {
     public String toString() {
         return "carta vacia";
     }
+
+    public String getColor() {throw new RuntimeException("Carta Vacia no tiene color");}
 }

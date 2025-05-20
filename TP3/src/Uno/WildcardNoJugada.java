@@ -12,7 +12,9 @@ public class WildcardNoJugada extends Carta{
     }
 
     public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
-        throw new RuntimeException("WildCard sin color asignado");
+        Wildcard cartaAJugar = new Wildcard(juego.getPozo().getColor());
+        jugador.removerCarta(this);
+        return cartaAJugar.serJugada(juego, jugador);
     }
 
     boolean coincideColor(String color) {
@@ -26,4 +28,8 @@ public class WildcardNoJugada extends Carta{
     boolean coincideTipo(String tipo) {
         throw new RuntimeException("Not supported yet.");
     }
+
+    public String toString() {return "wildcard";}
+
+    public String getColor(){ throw new RuntimeException("Wildcard no jugada. Aun no tiene color");}
 }

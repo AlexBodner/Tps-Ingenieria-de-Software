@@ -37,4 +37,6 @@ public class Skip extends Carta{
         return  "skip " + color;
     }
 
+    public String getColor(){ return color;}
+
 }

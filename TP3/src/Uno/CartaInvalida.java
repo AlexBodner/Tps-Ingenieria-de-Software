@@ -21,4 +21,6 @@ public class CartaInvalida extends Carta{
     public String toString() {
         return "carta invalida";
     }
+
+    public String getColor() {throw new RuntimeException("Jugada invalida");}
 }

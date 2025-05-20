@@ -12,7 +12,6 @@ public class Wildcard extends Carta{
     public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
         if(this.acepta(juego.getPozo())) {
             juego.setPozo(this);
-            jugador.removerCarta(this);
         }
         return juego;
     }
@@ -36,4 +35,6 @@ public class Wildcard extends Carta{
     public String toString() {
         return  "wildcard " + color;
     }
+
+    public String getColor(){ return color;}
 }
