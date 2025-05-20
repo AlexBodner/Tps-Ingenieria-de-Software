@@ -82,6 +82,15 @@ public class TestsUno {
                 .getPozo().toString() );
     }
 
+    @Test
+    public void test09CuatroJugadores8CartasConSkipJugadaSkipVerTurno(){
+        JuegoUNO juego = juego4Jugadores8CartasSkip();
+        assertEquals("J4", juego
+                .jugar(juego.getJugadorTurno(), "rojo 1")
+                .jugar(juego.getJugadorTurno(), "skip rojo")
+                .verJugadorTurno().getNombre());
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
