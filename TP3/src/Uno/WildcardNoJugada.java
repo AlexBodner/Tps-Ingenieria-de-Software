@@ -1,11 +1,12 @@
 package Uno;
 
 public class WildcardNoJugada extends Carta{
-    String tipo = "wildcard";
+    String tipo = "wildcardNoJugada";
 
     boolean acepta(Carta otra) {
-        throw new RuntimeException("Not supported yet.");
+        return true;
     }
+
     public Carta asignarColor(String color){
         return new Wildcard(color);
     }

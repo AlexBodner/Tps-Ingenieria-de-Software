@@ -3,6 +3,7 @@ package Uno;
 public class Wildcard extends Carta{
     String color;
     String tipo;
+
     public Wildcard(String color) {
         this.color = color;
         this.tipo = "wildcard";

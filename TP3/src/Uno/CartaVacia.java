@@ -2,10 +2,6 @@ package Uno;
 
 public class CartaVacia extends Carta {
 
-    CartaVacia() {
-    }
-
-    @Override
     boolean acepta(Carta otra) {
         return true;
     }
@@ -18,8 +14,11 @@ public class CartaVacia extends Carta {
         return true;
     }
 
-    @Override
     boolean coincideTipo(String tipo) {
         return true;
+    }
+
+    public String toString() {
+        return "carta vacia";
     }
 }

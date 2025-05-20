@@ -1,6 +1,7 @@
 package Uno;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class Jugador {
     String nombre;
@@ -14,14 +15,21 @@ class Jugador {
         return !mano.isEmpty();
     }
 
-    void recibirCarta(Carta carta) {
-        mano.add(carta);
+    void recibirCartas(List<Carta> cartas) {
+        for (Carta carta : cartas) {
+            mano.add(carta);
+        }
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public boolean puedeJugar(Carta cartaAJugar){
         return mano.contains(cartaAJugar);
     }
 
+    public void removerCarta(Carta cartaJugada) {
+        mano.remove(cartaJugada);
+    }
 }
