@@ -39,6 +39,6 @@ public class Reverse extends Carta{
     }
 
     public String toString() {
-        return color + " reverse";
+        return "reverse " + color;
     }
 }

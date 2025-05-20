@@ -73,6 +73,15 @@ public class TestsUno {
                 .getPozo().toString() );
     }
 
+    @Test
+    public void test09CuatroJugadores8CartasConSkipJugadaSkip(){
+        JuegoUNO juego = juego4Jugadores8CartasSkip();
+        assertEquals("skip azul", juego
+                .jugar(juego.getJugadorTurno(), "rojo 1")
+                .jugar(juego.getJugadorTurno(), "skip azul")
+                .getPozo().toString() );
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
@@ -109,6 +118,37 @@ public class TestsUno {
         mazo.add(new CartaNumerica("rojo", 1));
         mazo.add(new CartaNumerica("azul", 3));
         mazo.add(new CartaNumerica("azul", 1));
+        mazo.add(new CartaNumerica("verde", 1));
+        mazo.add(new CartaNumerica("rojo", 4));
+        mazo.add(new CartaNumerica("verde", 3));
+        mazo.add(new CartaNumerica("amarillo", 3));
+        mazo.add(new CartaNumerica("amarillo", 1));
+
+        ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
+        cantidadPorJugador.add(2);
+        cantidadPorJugador.add(2);
+        cantidadPorJugador.add(2);
+        cantidadPorJugador.add(2);
+
+        return new JuegoUNO(jugadores, mazo, cantidadPorJugador);
+    }
+
+    private static JuegoUNO juego4Jugadores8CartasSkip() {
+        Jugador j1 = new Jugador("J1");
+        Jugador j2 = new Jugador("J2");
+        Jugador j3 = new Jugador("J3");
+        Jugador j4 = new Jugador("J4");
+
+        ArrayList<Jugador> jugadores = new ArrayList<>();
+        jugadores.add(j1);
+        jugadores.add(j2);
+        jugadores.add(j3);
+        jugadores.add(j4);
+
+        ArrayList<Carta> mazo = new ArrayList<>();
+        mazo.add(new CartaNumerica("rojo", 1));
+        mazo.add(new CartaNumerica("azul", 3));
+        mazo.add(new Skip("azul"));
         mazo.add(new CartaNumerica("verde", 1));
         mazo.add(new CartaNumerica("rojo", 4));
         mazo.add(new CartaNumerica("verde", 3));

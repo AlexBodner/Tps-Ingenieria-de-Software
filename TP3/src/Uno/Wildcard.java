@@ -32,4 +32,8 @@ public class Wildcard extends Carta{
     boolean coincideTipo(String tipo) {
         return this.tipo.equals(tipo);
     }
+
+    public String toString() {
+        return  "wildcard " + color;
+    }
 }

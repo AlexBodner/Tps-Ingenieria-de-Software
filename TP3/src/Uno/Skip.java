@@ -34,7 +34,7 @@ public class Skip extends Carta{
     }
 
     public String toString() {
-        return color + " Uno.Skip";
+        return  "skip " + color;
     }
 
 }
