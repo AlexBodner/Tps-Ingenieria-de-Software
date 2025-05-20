@@ -1,10 +1,11 @@
 package Uno;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestsUno {
     @Test
@@ -45,6 +46,14 @@ public class TestsUno {
         assertEquals( "J1", juego.getJugadorTurno().getNombre() );
         assertEquals( "J4", juego.getJugadorTurno().getNombre() );
         assertEquals( "J1", juego.reverse().getJugadorTurno().getNombre() );
+    }
+
+    @Test
+    public void test06CuatroJugadores8CartasUnaJugadaPozo(){
+        JuegoUNO juego = juego4Jugadores8Cartas();
+        assertThrows( Exception.class, (Executable) () -> juego
+                .jugar(juego.getJugadorTurno(), "rojo 4")
+        );
     }
 
     private static JuegoUNO juego2Jugadores4Cartas() {

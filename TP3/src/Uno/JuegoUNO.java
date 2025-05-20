@@ -46,6 +46,15 @@ public class JuegoUNO {
         return this;
     }
 
+    public JuegoUNO jugar(Jugador jugador, String carta) {
+        Carta cartaAJugar = jugador.getCarta(carta);
+        if (cartaAJugar.acepta(cartaPozo)){
+            cartaPozo = cartaAJugar;
+            jugador.removerCarta(cartaAJugar);
+        }
+        return this;
+    }
+
 }
 
 

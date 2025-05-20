@@ -31,6 +31,12 @@ class Jugador {
         return mano.contains(cartaAJugar);
     }
 
+    public Carta getCarta(String carta){
+        return mano.stream()
+                .filter(c->c.toString().equals(carta))
+                .findFirst().orElse(new CartaInvalida());
+    }
+
     public void removerCarta(Carta cartaJugada) {
         mano.remove(cartaJugada);
     }
