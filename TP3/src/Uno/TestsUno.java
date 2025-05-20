@@ -49,11 +49,19 @@ public class TestsUno {
     }
 
     @Test
-    public void test06CuatroJugadores8CartasUnaJugadaPozo(){
+    public void test06CuatroJugadores8CartasJugadaInvalida(){
         JuegoUNO juego = juego4Jugadores8Cartas();
         assertThrows( Exception.class, (Executable) () -> juego
                 .jugar(juego.getJugadorTurno(), "rojo 4")
         );
+    }
+
+    @Test
+    public void test07CuatroJugadores8CartasJugadaPozo(){
+        JuegoUNO juego = juego4Jugadores8Cartas();
+        assertEquals("rojo 1",
+                juego.jugar(juego.getJugadorTurno(), "rojo 1")
+                .getPozo().toString() );
     }
 
     private static JuegoUNO juego2Jugadores4Cartas() {
