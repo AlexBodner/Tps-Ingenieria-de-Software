@@ -15,6 +15,8 @@ class Jugador {
         return !mano.isEmpty();
     }
 
+    int cantidadCartas() {  return mano.size(); }
+
     void recibirCartas(List<Carta> cartas) {
         for (Carta carta : cartas) {
             mano.add(carta);
