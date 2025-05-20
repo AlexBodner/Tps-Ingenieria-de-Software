@@ -76,9 +76,9 @@ public class TestsUno {
     @Test
     public void test09CuatroJugadores8CartasConSkipJugadaSkip(){
         JuegoUNO juego = juego4Jugadores8CartasSkip();
-        assertEquals("skip azul", juego
+        assertEquals("skip rojo", juego
                 .jugar(juego.getJugadorTurno(), "rojo 1")
-                .jugar(juego.getJugadorTurno(), "skip azul")
+                .jugar(juego.getJugadorTurno(), "skip rojo")
                 .getPozo().toString() );
     }
 
@@ -148,7 +148,7 @@ public class TestsUno {
         ArrayList<Carta> mazo = new ArrayList<>();
         mazo.add(new CartaNumerica("rojo", 1));
         mazo.add(new CartaNumerica("azul", 3));
-        mazo.add(new Skip("azul"));
+        mazo.add(new Skip("rojo"));
         mazo.add(new CartaNumerica("verde", 1));
         mazo.add(new CartaNumerica("rojo", 4));
         mazo.add(new CartaNumerica("verde", 3));
