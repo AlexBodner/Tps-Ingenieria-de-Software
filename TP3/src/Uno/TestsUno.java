@@ -35,6 +35,18 @@ public class TestsUno {
         assertEquals( "J1", juego.reverse().getJugadorTurno().getNombre() );
     }
 
+    @Test
+    public void test05CuatroJugadores8CartasReverseReverse(){
+        JuegoUNO juego = juego4Jugadores8Cartas();
+        assertEquals( "J1", juego.getJugadorTurno().getNombre() );
+        assertEquals( "J2", juego.getJugadorTurno().getNombre() );
+        assertEquals( "J3", juego.getJugadorTurno().getNombre() );
+        assertEquals( "J2", juego.reverse().getJugadorTurno().getNombre() );
+        assertEquals( "J1", juego.getJugadorTurno().getNombre() );
+        assertEquals( "J4", juego.getJugadorTurno().getNombre() );
+        assertEquals( "J1", juego.reverse().getJugadorTurno().getNombre() );
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
