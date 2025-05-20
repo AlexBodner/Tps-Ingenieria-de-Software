@@ -30,4 +30,11 @@ public class JuegoUNO {
     public Jugador getJugador(String nombre){
         return jugadores.stream().filter(j -> j.getNombre().equals(nombre)).findFirst().orElse(null);
     }
+
+    public Jugador getJugadorTurno(){
+        // Tomamos el primero y lo ponemos ultimo en la lista
+        Jugador jugador = jugadores.removeFirst();
+        jugadores.add(jugador);
+        return jugador;
+    }
 }

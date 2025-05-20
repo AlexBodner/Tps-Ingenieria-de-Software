@@ -19,6 +19,12 @@ public class TestsUno {
         assertEquals( 2, juego.getJugador("J2").cantidadCartas() );
     }
 
+    @Test
+    public void test03DosJugadores4CartasTurno1(){
+        JuegoUNO juego = juego2Jugadores4Cartas();
+        assertEquals( "J1", juego.getJugadorTurno().getNombre() );
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
