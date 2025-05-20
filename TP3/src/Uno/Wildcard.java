@@ -8,6 +8,15 @@ public class Wildcard extends Carta{
         this.color = color;
         this.tipo = "wildcard";
     }
+
+    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
+        if(this.acepta(juego.getPozo())) {
+            juego.setPozo(this);
+            jugador.removerCarta(this);
+        }
+        return juego;
+    }
+
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
     }

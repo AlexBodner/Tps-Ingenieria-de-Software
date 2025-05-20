@@ -28,6 +28,10 @@ public class JuegoUNO {
         return cartaPozo;
     }
 
+    public void setPozo(Carta cartaPozo) {
+        this.cartaPozo = cartaPozo;
+    }
+
     public Jugador getJugador(String nombre) {
         return jugadores.stream().filter(j -> j.getNombre().equals(nombre)).findFirst().orElse(null);
     }
@@ -52,11 +56,7 @@ public class JuegoUNO {
 
     public JuegoUNO jugar(Jugador jugador, String carta) {
         Carta cartaAJugar = jugador.getCarta(carta);
-        if (cartaAJugar.acepta(cartaPozo)){
-            cartaPozo = cartaAJugar;
-            jugador.removerCarta(cartaAJugar);
-        }
-        return this;
+        return cartaAJugar.serJugada(this, jugador);
     }
 
 }

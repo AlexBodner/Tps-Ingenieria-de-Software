@@ -3,9 +3,19 @@ package Uno;
 public class Reverse extends Carta{
     private String tipo;
     String color;
+
     Reverse(String color) {
         this.color = color;
         tipo = "reverse";
+    }
+
+    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
+        if(this.acepta(juego.getPozo())) {
+            juego.setPozo(this);
+            jugador.removerCarta(this);
+            return juego.reverse();
+        }
+        return juego;
     }
 
     boolean acepta(Carta otra) {
@@ -29,6 +39,6 @@ public class Reverse extends Carta{
     }
 
     public String toString() {
-        return color + " Uno.Reverse";
+        return color + " reverse";
     }
 }

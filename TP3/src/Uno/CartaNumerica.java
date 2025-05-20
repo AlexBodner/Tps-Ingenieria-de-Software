@@ -4,10 +4,19 @@ class CartaNumerica extends Carta {
     int numero;
     private String tipo;
     String color;
+
     CartaNumerica(String color, int numero) {
         this.color = color;
         this.numero = numero;
         tipo = "numerica";
+    }
+
+    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
+        if(this.acepta(juego.getPozo())) {
+            juego.setPozo(this);
+            jugador.removerCarta(this);
+        }
+        return juego;
     }
 
     boolean acepta(Carta otra) {

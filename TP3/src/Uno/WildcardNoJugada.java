@@ -10,6 +10,11 @@ public class WildcardNoJugada extends Carta{
     public Carta asignarColor(String color){
         return new Wildcard(color);
     }
+
+    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
+        throw new RuntimeException("WildCard sin color asignado");
+    }
+
     boolean coincideColor(String color) {
         throw new RuntimeException("Not supported yet.");
     }
