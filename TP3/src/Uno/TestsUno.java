@@ -75,7 +75,7 @@ public class TestsUno {
 
     @Test
     public void test09CuatroJugadores8CartasConSkipJugadaSkip(){
-        JuegoUNO juego = juego4Jugadores8CartasSkip();
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverse();
         assertEquals("skip rojo", juego
                 .jugar(juego.getJugadorTurno(), "rojo 1")
                 .jugar(juego.getJugadorTurno(), "skip rojo")
@@ -84,10 +84,20 @@ public class TestsUno {
 
     @Test
     public void test09CuatroJugadores8CartasConSkipJugadaSkipVerTurno(){
-        JuegoUNO juego = juego4Jugadores8CartasSkip();
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverse();
         assertEquals("J4", juego
                 .jugar(juego.getJugadorTurno(), "rojo 1")
                 .jugar(juego.getJugadorTurno(), "skip rojo")
+                .verJugadorTurno().getNombre());
+    }
+
+    @Test
+    public void test10CuatroJugadores8CartasConSkipJugadaReverseVerTurno(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverse();
+        assertEquals("J2", juego
+                .jugar(juego.getJugadorTurno(), "rojo 1") //J1
+                .jugar(juego.getJugadorTurno(), "verde 1") //J2
+                .jugar(juego.getJugadorTurno(), "reverse verde") //J3
                 .verJugadorTurno().getNombre());
     }
 
@@ -142,7 +152,7 @@ public class TestsUno {
         return new JuegoUNO(jugadores, mazo, cantidadPorJugador);
     }
 
-    private static JuegoUNO juego4Jugadores8CartasSkip() {
+    private static JuegoUNO juego4Jugadores8CartasSkipReverse() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
         Jugador j3 = new Jugador("J3");
@@ -155,14 +165,14 @@ public class TestsUno {
         jugadores.add(j4);
 
         ArrayList<Carta> mazo = new ArrayList<>();
-        mazo.add(new CartaNumerica("rojo", 1));
-        mazo.add(new CartaNumerica("azul", 3));
-        mazo.add(new Skip("rojo"));
-        mazo.add(new CartaNumerica("verde", 1));
-        mazo.add(new CartaNumerica("rojo", 4));
-        mazo.add(new CartaNumerica("verde", 3));
-        mazo.add(new CartaNumerica("amarillo", 3));
-        mazo.add(new CartaNumerica("amarillo", 1));
+        mazo.add(new CartaNumerica("rojo", 1));    // J1
+        mazo.add(new CartaNumerica("azul", 3));    // J1
+        mazo.add(new Skip("rojo"));                        // J2
+        mazo.add(new CartaNumerica("verde", 1));   // J2
+        mazo.add(new Reverse("verde"));                    // J3
+        mazo.add(new CartaNumerica("verde", 3));   // J3
+        mazo.add(new CartaNumerica("amarillo", 3));// J4
+        mazo.add(new CartaNumerica("amarillo", 1));// J4
 
         ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
         cantidadPorJugador.add(2);
