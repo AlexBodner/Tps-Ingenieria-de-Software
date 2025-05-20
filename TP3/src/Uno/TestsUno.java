@@ -64,6 +64,15 @@ public class TestsUno {
                 .getPozo().toString() );
     }
 
+    @Test
+    public void test08CuatroJugadores8CartasDosJugadas(){
+        JuegoUNO juego = juego4Jugadores8Cartas();
+        assertEquals("azul 1", juego
+                .jugar(juego.getJugadorTurno(), "rojo 1")
+                .jugar(juego.getJugadorTurno(), "azul 1")
+                .getPozo().toString() );
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
