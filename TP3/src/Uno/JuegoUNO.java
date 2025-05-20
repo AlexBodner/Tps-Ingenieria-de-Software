@@ -39,6 +39,10 @@ public class JuegoUNO {
         return jugador;
     }
 
+    public boolean esSuTurno(Jugador jugador){
+        return jugadores.getFirst().getNombre().equals(jugador.getNombre());
+    }
+
     public JuegoUNO reverse(){
         Collections.reverse(jugadores);
         Jugador jugador = jugadores.removeFirst();
