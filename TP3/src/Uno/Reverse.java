@@ -9,15 +9,6 @@ public class Reverse extends Carta{
         tipo = "reverse";
     }
 
-    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
-        if(this.acepta(juego.getPozo())) {
-            juego.setPozo(this);
-            jugador.removerCarta(this);
-            return juego.reverse();
-        }
-        return juego;
-    }
-
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
     }
@@ -43,4 +34,9 @@ public class Reverse extends Carta{
     }
 
     public String getColor(){ return color;}
+    public  void applyEffect(JuegoUNO juego){
+        juego.reverse();
+    };
+
 }
+

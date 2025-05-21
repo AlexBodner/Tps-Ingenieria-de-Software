@@ -1,5 +1,8 @@
 package Uno;
 
+import java.util.AbstractList;
+import java.util.List;
+
 public class Draw2 extends Carta{
     private String tipo;
     String color;
@@ -7,7 +10,10 @@ public class Draw2 extends Carta{
         this.color = color;
         this.tipo = "draw2";
     }
-
+    public void applyEffect(JuegoUNO juego) {
+        juego.getJugadorTurnoYSkip().recibirCartas(juego.levantarDeMazo(2));
+        return ;
+    }
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
     }

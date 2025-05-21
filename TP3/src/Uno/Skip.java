@@ -8,14 +8,7 @@ public class Skip extends Carta{
         tipo = "skip";
     }
 
-    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
-        if(this.acepta(juego.getPozo())) {
-            juego.setPozo(this);
-            jugador.removerCarta(this);
-            juego.getJugadorTurno(); // salteamos uno
-        }
-        return juego;
-    }
+
 
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
@@ -38,5 +31,10 @@ public class Skip extends Carta{
     }
 
     public String getColor(){ return color;}
+
+    @Override
+    public void applyEffect(JuegoUNO juego) {
+        juego.getJugadorTurnoYSkip();
+    }
 
 }

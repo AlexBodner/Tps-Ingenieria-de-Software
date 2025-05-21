@@ -11,11 +11,6 @@ public class WildcardNoJugada extends Carta{
         return new Wildcard(color);
     }
 
-    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
-        Wildcard cartaAJugar = new Wildcard(juego.getPozo().getColor());
-        jugador.removerCarta(this);
-        return cartaAJugar.serJugada(juego, jugador);
-    }
 
     boolean coincideColor(String color) {
         throw new RuntimeException("Not supported yet.");

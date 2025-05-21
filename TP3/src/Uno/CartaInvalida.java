@@ -23,4 +23,9 @@ public class CartaInvalida extends Carta{
     }
 
     public String getColor() {throw new RuntimeException("Jugada invalida");}
+
+    @Override
+    public void applyEffect(JuegoUNO juego) {
+        throw new RuntimeException("Jugada invalida");
+    }
 }

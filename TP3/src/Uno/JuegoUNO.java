@@ -2,6 +2,7 @@ package Uno;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class JuegoUNO {
     ArrayList<Carta> mazo;
@@ -11,16 +12,18 @@ public class JuegoUNO {
     public JuegoUNO(ArrayList<Jugador> jugadores, ArrayList<Carta> mazo, ArrayList<Integer> cantidadPorJugador) {
         this.jugadores = jugadores;
         this.mazo = mazo;
-        int i = 0;
         int index_cant = 0;
         for (Jugador jugador : jugadores) {
             int cantidad = cantidadPorJugador.get(index_cant);
-            jugador.recibirCartas(mazo.subList(i, i + cantidad));
-            i += cantidad;
-            index_cant += 1;
+            jugador.recibirCartas(levantarDeMazo (cantidad) );
+            index_cant+=1;
         }
     }
-
+    public ArrayList<Carta> levantarDeMazo(int cantidad) {
+        ArrayList<Carta> levantadas = new ArrayList<>(mazo.subList(0, cantidad));
+        mazo = new ArrayList<>(mazo.subList(cantidad, mazo.size()));
+        return levantadas;
+    }
     public JuegoUNO() {
     }
 
@@ -36,7 +39,7 @@ public class JuegoUNO {
         return jugadores.stream().filter(j -> j.getNombre().equals(nombre)).findFirst().orElse(null);
     }
 
-    public Jugador getJugadorTurno() {
+    public Jugador getJugadorTurnoYSkip() {
         // Tomamos el primero y lo ponemos ultimo en la lista
         Jugador jugador = jugadores.removeFirst();
         jugadores.add(jugador);
@@ -59,8 +62,29 @@ public class JuegoUNO {
     }
 
     public JuegoUNO jugar(Jugador jugador, String carta) {
+        //falta chequear si la tiene?
         Carta cartaAJugar = jugador.getCarta(carta);
-        return cartaAJugar.serJugada(this, jugador);
+        jugador.removerCarta(cartaAJugar);
+        if(cartaAJugar.acepta(this.getPozo())) {
+            this.setPozo(cartaAJugar);
+        }
+        cartaAJugar.applyEffect(this);
+        return this;
+    }
+    //TODO
+
+    public JuegoUNO jugarWildcard(Jugador jugador, String color) {
+        WildcardNoJugada w = new WildcardNoJugada();
+        if (jugador.puedeJugar(w)){
+            w.asignarColor(color);
+            jugador.removerCarta(w);
+            this.setPozo(w.asignarColor(color));
+
+        }
+        else{
+            throw new RuntimeException("No tenia wildcard");
+        }
+        return this;
     }
 
 }

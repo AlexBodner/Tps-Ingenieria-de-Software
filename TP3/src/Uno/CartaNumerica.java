@@ -11,10 +11,9 @@ class CartaNumerica extends Carta {
         tipo = "numerica";
     }
 
-    public JuegoUNO serJugada(JuegoUNO juego, Jugador jugador){
+    public JuegoUNO serJugada(JuegoUNO juego){
         if(this.acepta(juego.getPozo())) {
             juego.setPozo(this);
-            jugador.removerCarta(this);
         }
         return juego;
     }

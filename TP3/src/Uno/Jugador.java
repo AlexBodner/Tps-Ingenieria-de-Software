@@ -3,7 +3,7 @@ package Uno;
 import java.util.ArrayList;
 import java.util.List;
 
-class Jugador {
+public class Jugador {
     String nombre;
     ArrayList<Carta> mano = new ArrayList<>();
 
@@ -17,7 +17,7 @@ class Jugador {
 
     int cantidadCartas() {  return mano.size(); }
 
-    void recibirCartas(List<Carta> cartas) {
+    public void recibirCartas(List<Carta> cartas) {
         for (Carta carta : cartas) {
             mano.add(carta);
         }
@@ -36,6 +36,7 @@ class Jugador {
                 .filter(c->c.toString().equals(carta))
                 .findFirst().orElse(new CartaInvalida());
     }
+
 
     public void removerCarta(Carta cartaJugada) {
         mano.remove(cartaJugada);
