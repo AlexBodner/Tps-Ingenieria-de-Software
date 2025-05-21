@@ -34,7 +34,7 @@ public class Draw2 extends Carta{
     }
 
     public String toString() {
-        return color + " +2";
+        return "+2 " + color;
     }
 
     public String getColor(){ return color;}

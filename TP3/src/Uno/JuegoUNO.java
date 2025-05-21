@@ -24,6 +24,7 @@ public class JuegoUNO {
         mazo = new ArrayList<>(mazo.subList(cantidad, mazo.size()));
         return levantadas;
     }
+
     public JuegoUNO() {
     }
 

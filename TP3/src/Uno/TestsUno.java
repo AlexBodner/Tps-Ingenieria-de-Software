@@ -123,6 +123,17 @@ public class TestsUno {
                 .getPozo().toString());
     }
 
+    @Test
+    public void test13CuatroJugadores11CartasDraw2(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertEquals(3, juego
+                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
+                .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
+                .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
+                .jugar(juego.getJugadorTurnoYSkip(), "+2 verde")//J4
+                .getJugador("J1").cantidadCartas());
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
@@ -194,13 +205,16 @@ public class TestsUno {
         mazo.add(new Reverse("verde"));                    // J3
         mazo.add(new CartaNumerica("verde", 3));   // J3
         mazo.add(new CartaNumerica("amarillo", 3));// J4
-        mazo.add(new WildcardNoJugada());// J4
+        mazo.add(new WildcardNoJugada());                       // J4
+        mazo.add(new Draw2("verde"));                     // J4
+        mazo.add(new CartaNumerica("amarillo", 4));    // Mazo
+        mazo.add(new CartaNumerica("rojo", 4));    // Mazo
 
         ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
         cantidadPorJugador.add(2);
         cantidadPorJugador.add(2);
         cantidadPorJugador.add(2);
-        cantidadPorJugador.add(2);
+        cantidadPorJugador.add(3);
 
         return new JuegoUNO(jugadores, mazo, cantidadPorJugador);
     }
