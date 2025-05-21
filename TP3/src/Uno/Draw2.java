@@ -13,8 +13,7 @@ public class Draw2 extends Carta{
     }
 
     public void applyEffect(JuegoUNO juego) {
-        juego.getJugadorTurnoYSkip().recibirCartas(juego.levantarDeMazo(2));
-        return ;
+        juego.verJugadorTurno().recibirCartas(juego.levantarDeMazo(2));
     }
 
     boolean acepta(Carta otra) {

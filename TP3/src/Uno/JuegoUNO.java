@@ -40,11 +40,10 @@ public class JuegoUNO {
         return jugadores.stream().filter(j -> j.getNombre().equals(nombre)).findFirst().orElse(null);
     }
 
-    public Jugador getJugadorTurnoYSkip() {
-        // Tomamos el primero y lo ponemos ultimo en la lista
+    public JuegoUNO avanzarTurno(){
         Jugador jugador = jugadores.removeFirst();
         jugadores.add(jugador);
-        return jugador;
+        return this;
     }
 
     public boolean esSuTurno(Jugador jugador){
@@ -57,17 +56,19 @@ public class JuegoUNO {
 
     public JuegoUNO reverse(){
         Collections.reverse(jugadores);
-        Jugador jugador = jugadores.removeFirst();
-        jugadores.add(jugador);
+        this.avanzarTurno();
         return this;
     }
 
     public JuegoUNO jugar(Jugador jugador, String carta) {
         Carta cartaAJugar = jugador.getCarta(carta);
-        if(cartaAJugar.acepta(this.getPozo())) {
-            jugador.removerCarta(cartaAJugar);
-            this.setPozo(cartaAJugar);
-            cartaAJugar.applyEffect(this);
+        if(this.verJugadorTurno() == jugador) {
+            if (cartaAJugar.acepta(this.getPozo())) {
+                jugador.removerCarta(cartaAJugar);
+                this.setPozo(cartaAJugar);
+                this.avanzarTurno();
+                cartaAJugar.applyEffect(this);
+            }
         }
         return this;
     }
@@ -78,6 +79,7 @@ public class JuegoUNO {
             jugador.removerCarta(cartaAJugar);
             Wildcard wildcard = new Wildcard(color);
             this.setPozo(wildcard);
+            this.avanzarTurno();
         }
         return this;
     }

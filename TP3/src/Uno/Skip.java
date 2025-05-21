@@ -32,7 +32,7 @@ public class Skip extends Carta{
     public String getColor(){ return color;}
 
     public void applyEffect(JuegoUNO juego) {
-        juego.getJugadorTurnoYSkip();
+        juego.avanzarTurno();
     }
 
 }

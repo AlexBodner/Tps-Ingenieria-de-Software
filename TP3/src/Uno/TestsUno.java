@@ -23,36 +23,46 @@ public class TestsUno {
     @Test
     public void test03DosJugadores4CartasTurnos(){
         JuegoUNO juego = juego2Jugadores4Cartas();
-        assertEquals( "J1", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J2", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J1", juego.getJugadorTurnoYSkip().getNombre() );
+        assertEquals( "J1", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J2", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J1", juego.verJugadorTurno().getNombre() );
     }
 
     @Test
     public void test04CuatroJugadores8CartasReverse(){
         JuegoUNO juego = juego4Jugadores8Cartas();
-        assertEquals( "J1", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J2", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J1", juego.reverse().getJugadorTurnoYSkip().getNombre() );
+        assertEquals( "J1", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J2", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J1", juego.reverse().verJugadorTurno().getNombre() );
     }
 
     @Test
     public void test05CuatroJugadores8CartasReverseReverse(){
         JuegoUNO juego = juego4Jugadores8Cartas();
-        assertEquals( "J1", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J2", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J3", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J2", juego.reverse().getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J1", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J4", juego.getJugadorTurnoYSkip().getNombre() );
-        assertEquals( "J1", juego.reverse().getJugadorTurnoYSkip().getNombre() );
+        assertEquals( "J1", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J2", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J3", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J2", juego.reverse().verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J1", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J4", juego.verJugadorTurno().getNombre() );
+        juego.avanzarTurno();
+        assertEquals( "J1", juego.reverse().verJugadorTurno().getNombre() );
     }
 
     @Test
     public void test06CuatroJugadores8CartasJugadaInvalida(){
         JuegoUNO juego = juego4Jugadores8Cartas();
         assertThrows( Exception.class, (Executable) () -> juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 4")
+                .jugar(juego.verJugadorTurno(), "rojo 4")
         );
     }
 
@@ -60,7 +70,7 @@ public class TestsUno {
     public void test07CuatroJugadores8CartasJugadaPozo(){
         JuegoUNO juego = juego4Jugadores8Cartas();
         assertEquals("rojo 1",
-                juego.jugar(juego.getJugadorTurnoYSkip(), "rojo 1")
+                juego.jugar(juego.verJugadorTurno(), "rojo 1")
                 .getPozo().toString() );
     }
 
@@ -68,8 +78,8 @@ public class TestsUno {
     public void test08CuatroJugadores8CartasDosJugadas(){
         JuegoUNO juego = juego4Jugadores8Cartas();
         assertEquals("azul 1", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1")
-                .jugar(juego.getJugadorTurnoYSkip(), "azul 1")
+                .jugar(juego.verJugadorTurno(), "rojo 1")
+                .jugar(juego.verJugadorTurno(), "azul 1")
                 .getPozo().toString() );
     }
 
@@ -77,8 +87,8 @@ public class TestsUno {
     public void test09CuatroJugadores8CartasJugadaSkip(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals("skip rojo", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1")
-                .jugar(juego.getJugadorTurnoYSkip(), "skip rojo")
+                .jugar(juego.verJugadorTurno(), "rojo 1")
+                .jugar(juego.verJugadorTurno(), "skip rojo")
                 .getPozo().toString() );
     }
 
@@ -86,8 +96,8 @@ public class TestsUno {
     public void test09CuatroJugadores8CartasJugadaSkipVerTurno(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals("J4", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1")
-                .jugar(juego.getJugadorTurnoYSkip(), "skip rojo")
+                .jugar(juego.verJugadorTurno(), "rojo 1")
+                .jugar(juego.verJugadorTurno(), "skip rojo")
                 .verJugadorTurno().getNombre());
     }
 
@@ -95,9 +105,9 @@ public class TestsUno {
     public void test10CuatroJugadores8CartasJugadaReverseVerTurno(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals("J2", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
-                .jugar(juego.getJugadorTurnoYSkip(), "reverse verde") //J3
+                .jugar(juego.verJugadorTurno(), "rojo 1") //J1
+                .jugar(juego.verJugadorTurno(), "verde 1") //J2
+                .jugar(juego.verJugadorTurno(), "reverse verde") //J3
                 .verJugadorTurno().getNombre());
     }
 
@@ -105,10 +115,10 @@ public class TestsUno {
     public void test11CuatroJugadores8CartasWildCardVerTurno(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals("J1", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
-                .jugarWildcard(juego.getJugadorTurnoYSkip(), "wildcard", "amarillo")//J4
+                .jugar(juego.verJugadorTurno(), "rojo 1") //J1
+                .jugar(juego.verJugadorTurno(), "verde 1") //J2
+                .jugar(juego.verJugadorTurno(), "verde 3") //J3
+                .jugarWildcard(juego.verJugadorTurno(), "wildcard", "amarillo")//J4
                 .verJugadorTurno().getNombre());
     }
 
@@ -116,21 +126,22 @@ public class TestsUno {
     public void test12CuatroJugadores8CartasWildCardVerPozo(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals("wildcard azul", juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
-                .jugarWildcard(juego.getJugadorTurnoYSkip(), "wildcard", "azul")//J4
+                .jugar(juego.verJugadorTurno(), "rojo 1") //J1
+                .jugar(juego.verJugadorTurno(), "verde 1") //J2
+                .jugar(juego.verJugadorTurno(), "verde 3") //J3
+                .jugarWildcard(juego.verJugadorTurno(), "wildcard", "azul")//J4
                 .getPozo().toString());
     }
+
 
     @Test
     public void test13CuatroJugadores11CartasDraw2(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals(3, juego
-                .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
-                .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
-                .jugar(juego.getJugadorTurnoYSkip(), "+2 verde")//J4
+                .jugar(juego.verJugadorTurno(), "rojo 1") //J1
+                .jugar(juego.verJugadorTurno(), "verde 1") //J2
+                .jugar(juego.verJugadorTurno(), "verde 3") //J3
+                .jugar(juego.verJugadorTurno(), "+2 verde")//J4
                 .getJugador("J1").cantidadCartas());
     }
 
