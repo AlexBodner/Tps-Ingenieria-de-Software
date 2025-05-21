@@ -11,13 +11,6 @@ class CartaNumerica extends Carta {
         tipo = "numerica";
     }
 
-    public JuegoUNO serJugada(JuegoUNO juego){
-        if(this.acepta(juego.getPozo())) {
-            juego.setPozo(this);
-        }
-        return juego;
-    }
-
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideNumero(this.numero);
     }

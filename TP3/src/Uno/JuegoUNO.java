@@ -62,31 +62,24 @@ public class JuegoUNO {
     }
 
     public JuegoUNO jugar(Jugador jugador, String carta) {
-        //falta chequear si la tiene?
         Carta cartaAJugar = jugador.getCarta(carta);
-        jugador.removerCarta(cartaAJugar);
         if(cartaAJugar.acepta(this.getPozo())) {
+            jugador.removerCarta(cartaAJugar);
             this.setPozo(cartaAJugar);
-        }
-        cartaAJugar.applyEffect(this);
-        return this;
-    }
-    //TODO
-
-    public JuegoUNO jugarWildcard(Jugador jugador, String color) {
-        WildcardNoJugada w = new WildcardNoJugada();
-        if (jugador.puedeJugar(w)){
-            w.asignarColor(color);
-            jugador.removerCarta(w);
-            this.setPozo(w.asignarColor(color));
-
-        }
-        else{
-            throw new RuntimeException("No tenia wildcard");
+            cartaAJugar.applyEffect(this);
         }
         return this;
     }
 
+    public JuegoUNO jugarWildcard(Jugador jugador, String carta, String color) {
+        Carta cartaAJugar = jugador.getCarta(carta);
+        if (cartaAJugar.acepta(this.getPozo())) {
+            jugador.removerCarta(cartaAJugar);
+            Wildcard wildcard = new Wildcard(color);
+            this.setPozo(wildcard);
+        }
+        return this;
+    }
 }
 
 

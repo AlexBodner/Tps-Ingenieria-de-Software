@@ -9,5 +9,4 @@ abstract public class Carta {
     public  void applyEffect(JuegoUNO juego){
         return;
     };
-
 }

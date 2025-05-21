@@ -37,7 +37,6 @@ public class Jugador {
                 .findFirst().orElse(new CartaInvalida());
     }
 
-
     public void removerCarta(Carta cartaJugada) {
         mano.remove(cartaJugada);
     }

@@ -108,18 +108,18 @@ public class TestsUno {
                 .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
                 .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
                 .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
-                .jugar(juego.getJugadorTurnoYSkip(), "wildcard")//J4
+                .jugarWildcard(juego.getJugadorTurnoYSkip(), "wildcard", "amarillo")//J4
                 .verJugadorTurno().getNombre());
     }
 
     @Test
     public void test12CuatroJugadores8CartasWildCardVerPozo(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
-        assertEquals("wildcard verde", juego
+        assertEquals("wildcard azul", juego
                 .jugar(juego.getJugadorTurnoYSkip(), "rojo 1") //J1
                 .jugar(juego.getJugadorTurnoYSkip(), "verde 1") //J2
                 .jugar(juego.getJugadorTurnoYSkip(), "verde 3") //J3
-                .jugar(juego.getJugadorTurnoYSkip(), "wildcard")//J4
+                .jugarWildcard(juego.getJugadorTurnoYSkip(), "wildcard", "azul")//J4
                 .getPozo().toString());
     }
 

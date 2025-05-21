@@ -34,6 +34,7 @@ public class Reverse extends Carta{
     }
 
     public String getColor(){ return color;}
+    
     public  void applyEffect(JuegoUNO juego){
         juego.reverse();
     };

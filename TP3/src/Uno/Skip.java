@@ -3,12 +3,11 @@ package Uno;
 public class Skip extends Carta{
     private String tipo;
     String color;
+
     Skip(String color) {
         this.color = color;
         tipo = "skip";
     }
-
-
 
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
@@ -32,7 +31,6 @@ public class Skip extends Carta{
 
     public String getColor(){ return color;}
 
-    @Override
     public void applyEffect(JuegoUNO juego) {
         juego.getJugadorTurnoYSkip();
     }

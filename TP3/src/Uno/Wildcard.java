@@ -9,7 +9,6 @@ public class Wildcard extends Carta{
         this.tipo = "wildcard";
     }
 
-
     boolean acepta(Carta otra) {
         return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
     }
