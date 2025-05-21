@@ -133,7 +133,6 @@ public class TestsUno {
                 .getPozo().toString());
     }
 
-
     @Test
     public void test13CuatroJugadores11CartasDraw2(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
@@ -145,6 +144,46 @@ public class TestsUno {
                 .getJugador("J1").cantidadCartas());
     }
 
+    @Test
+    public void test14DosJugadores4CartasLeCantanUNO(){
+        JuegoUNO juego = juego2Jugadores4Cartas();
+        assertEquals( 8, juego
+                .jugar(juego.getJugador("J1"), "rojo 1")
+                .cantarUno(juego.getJugador("J2"))
+                .getJugador("J1").cantidadCartas());
+    }
+
+    @Test
+    public void test15DosJugadores4CartasAutoCantaUNO(){
+        JuegoUNO juego = juego2Jugadores4Cartas();
+        assertEquals( 1, juego
+                .jugar(juego.getJugador("J1"), "rojo 1")
+                .cantarUno(juego.getJugador("J1"))
+                .getJugador("J1").cantidadCartas());
+    }
+
+    @Test
+    public void test16DosJugadores4CartaAutoCantaYLeCantanUNO(){
+        JuegoUNO juego = juego2Jugadores4Cartas();
+        assertEquals( 9, juego
+                .jugar(juego.getJugador("J1"), "rojo 1")
+                .cantarUno(juego.getJugador("J1"))
+                .cantarUno(juego.getJugador("J2"))
+                .getJugador("J2").cantidadCartas());
+    }
+
+    @Test
+    public void test17CuatroJugadores11CartasDraw2(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertEquals(8, juego
+                .jugar(juego.verJugadorTurno(), "rojo 1")  //J1
+                .jugar(juego.verJugadorTurno(), "verde 1") //J2
+                .jugar(juego.verJugadorTurno(), "verde 3") //J3
+                .jugar(juego.verJugadorTurno(), "amarillo 3")//J4
+                .cantarUno(juego.getJugador("J2"))
+                .getJugador("J2").cantidadCartas());
+    }
+
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
@@ -153,10 +192,19 @@ public class TestsUno {
         jugadores.add(j2);
 
         ArrayList<Carta> mazo = new ArrayList<>();
-        mazo.add(new CartaNumerica("rojo", 1));
-        mazo.add(new CartaNumerica("rojo", 3));
-        mazo.add(new CartaNumerica("azul", 3));
-        mazo.add(new CartaNumerica("verde", 1));
+        mazo.add(new CartaNumerica("rojo", 1)); // J1
+        mazo.add(new CartaNumerica("rojo", 3)); // J1
+        mazo.add(new CartaNumerica("azul", 3)); // J2
+        mazo.add(new CartaNumerica("verde", 1));// J2
+
+        mazo.add(new CartaNumerica("rojo", 2));
+        mazo.add(new CartaNumerica("rojo", 4));
+        mazo.add(new CartaNumerica("azul", 1));
+        mazo.add(new CartaNumerica("verde", 2));
+        mazo.add(new CartaNumerica("amarillo", 1));
+        mazo.add(new CartaNumerica("amarillo", 3));
+        mazo.add(new CartaNumerica("azul", 4));
+        mazo.add(new CartaNumerica("verde", 3));
 
         ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
         cantidadPorJugador.add(2);
@@ -220,6 +268,17 @@ public class TestsUno {
         mazo.add(new Draw2("verde"));                     // J4
         mazo.add(new CartaNumerica("amarillo", 4));    // Mazo
         mazo.add(new CartaNumerica("rojo", 4));    // Mazo
+
+        mazo.add(new CartaNumerica("amarillo", 1));    // Mazo
+        mazo.add(new CartaNumerica("rojo", 2));    // Mazo
+        mazo.add(new CartaNumerica("amarillo", 2));    // Mazo
+        mazo.add(new CartaNumerica("rojo", 3));    // Mazo
+        mazo.add(new CartaNumerica("azul", 1));    // Mazo
+        mazo.add(new CartaNumerica("verde", 4));    // Mazo
+        mazo.add(new CartaNumerica("azul", 2));    // Mazo
+        mazo.add(new CartaNumerica("verde", 2));    // Mazo
+        mazo.add(new CartaNumerica("azul", 3));    // Mazo
+        mazo.add(new CartaNumerica("rojo", 5));    // Mazo
 
         ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
         cantidadPorJugador.add(2);

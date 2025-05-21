@@ -8,6 +8,8 @@ public class JuegoUNO {
     ArrayList<Carta> mazo;
     ArrayList<Jugador> jugadores;
     Carta cartaPozo = new CartaVacia();
+    boolean unoCantado = false;
+    Jugador ultimoJugador;
 
     public JuegoUNO(ArrayList<Jugador> jugadores, ArrayList<Carta> mazo, ArrayList<Integer> cantidadPorJugador) {
         this.jugadores = jugadores;
@@ -68,6 +70,7 @@ public class JuegoUNO {
                 this.setPozo(cartaAJugar);
                 this.avanzarTurno();
                 cartaAJugar.applyEffect(this);
+                ultimoJugador = jugador;
             }
         }
         return this;
@@ -80,6 +83,28 @@ public class JuegoUNO {
             Wildcard wildcard = new Wildcard(color);
             this.setPozo(wildcard);
             this.avanzarTurno();
+            ultimoJugador = jugador;
+        }
+        return this;
+    }
+
+    public JuegoUNO cantarUno(Jugador jugador){
+        if ( ultimoJugador == jugador ){
+            unoCantado = true;
+            return this;
+        }
+        else{
+            if (!unoCantado){
+                if(ultimoJugador.cantidadCartas()==1){
+                    ultimoJugador.recibirCartas(levantarDeMazo(7));
+                    unoCantado = true;
+                }
+                else{
+                    jugador.recibirCartas(levantarDeMazo(7));
+                }
+            } else {
+                jugador.recibirCartas(levantarDeMazo(7));
+            }
         }
         return this;
     }
