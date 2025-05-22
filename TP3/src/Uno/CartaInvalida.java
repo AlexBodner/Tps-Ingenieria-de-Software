@@ -2,6 +2,10 @@ package Uno;
 
 public class CartaInvalida extends Carta{
 
+    public CartaInvalida() {
+        super(null, null);
+    }
+
     boolean acepta(Carta otra) {
         throw new RuntimeException("Jugada invalida");
     }

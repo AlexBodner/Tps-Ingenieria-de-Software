@@ -2,6 +2,10 @@ package Uno;
 
 public class CartaVacia extends Carta {
 
+    public CartaVacia() {
+        super(null, null);
+    }
+
     boolean acepta(Carta otra) {
         return true;
     }

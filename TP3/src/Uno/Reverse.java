@@ -1,20 +1,17 @@
 package Uno;
 
 public class Reverse extends Carta{
-    private String tipo;
-    String color;
 
     Reverse(String color) {
-        this.color = color;
-        tipo = "reverse";
+        super(color, "reverse");
     }
 
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
+        return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
     }
 
     boolean coincideColor(String color) {
-        return color.equals(this.color);
+        return color.equals(this.getColor());
     }
 
     boolean coincideNumero(int numero) {
@@ -26,14 +23,12 @@ public class Reverse extends Carta{
     }
 
     boolean coincideTipo(String tipo) {
-        return this.tipo.equals(tipo);
+        return this.getTipo().equals(tipo);
     }
 
     public String toString() {
-        return "reverse " + color;
+        return "reverse " + getColor();
     }
-
-    public String getColor(){ return color;}
     
     public  void applyEffect(JuegoUNO juego){
         juego.reverse();

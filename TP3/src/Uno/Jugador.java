@@ -31,13 +31,15 @@ public class Jugador {
         return mano.contains(cartaAJugar);
     }
 
-    public Carta getCarta(String carta){
+    public Carta getCarta(Carta carta){
         return mano.stream()
-                .filter(c->c.toString().equals(carta))
+                .filter(c->c.toString().equals(carta.toString()))
                 .findFirst().orElse(new CartaInvalida());
     }
 
     public void removerCarta(Carta cartaJugada) {
-        mano.remove(cartaJugada);
+        mano.stream()
+                .filter(c-> c.coincideTipo(cartaJugada.getTipo())&&c.coincideColor(cartaJugada.getColor()))
+                .findFirst().orElse(new CartaInvalida());
     }
 }

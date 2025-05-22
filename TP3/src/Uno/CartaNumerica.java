@@ -2,21 +2,17 @@ package Uno;
 
 class CartaNumerica extends Carta {
     int numero;
-    private String tipo;
-    String color;
 
-    CartaNumerica(String color, int numero) {
-        this.color = color;
+    public CartaNumerica(String color, int numero) {
+        super(color, "numerica");
         this.numero = numero;
-        tipo = "numerica";
     }
-
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.color) || otra.coincideNumero(this.numero);
+        return otra.coincideColor(this.getColor()) || otra.coincideNumero(this.numero);
     }
 
     boolean coincideColor(String color) {
-        return this.color.equals(color);
+        return this.getColor().equals(color);
     }
 
     boolean coincideNumero(int numero) {
@@ -24,12 +20,11 @@ class CartaNumerica extends Carta {
     }
 
     boolean coincideTipo(String tipo) {
-        return this.tipo.equals(tipo);
+        return this.getTipo().equals(tipo);
     }
 
     public String toString() {
-        return color + " " + numero;
+        return getColor() + " " + numero;
     }
 
-    public String getColor() {return color;}
 }

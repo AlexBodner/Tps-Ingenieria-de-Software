@@ -4,12 +4,9 @@ import java.util.AbstractList;
 import java.util.List;
 
 public class Draw2 extends Carta{
-    private String tipo;
-    String color;
 
     Draw2(String color) {
-        this.color = color;
-        this.tipo = "draw2";
+        super(color, "draw2");
     }
 
     public void applyEffect(JuegoUNO juego) {
@@ -17,11 +14,11 @@ public class Draw2 extends Carta{
     }
 
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
+        return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
     }
 
     boolean coincideColor(String color) {
-        return color.equals(this.color);
+        return color.equals(this.getColor());
     }
 
     boolean coincideNumero(int numero) {
@@ -29,12 +26,10 @@ public class Draw2 extends Carta{
     }
 
     boolean coincideTipo(String tipo) {
-        return this.tipo.equals(tipo);
+        return this.getTipo().equals(tipo);
     }
 
     public String toString() {
-        return "+2 " + color;
+        return "+2 " + getColor();
     }
-
-    public String getColor(){ return color;}
 }

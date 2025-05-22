@@ -62,28 +62,17 @@ public class JuegoUNO {
         return this;
     }
 
-    public JuegoUNO jugar(Jugador jugador, String carta) {
-        Carta cartaAJugar = jugador.getCarta(carta);
-        if(this.verJugadorTurno() == jugador) {
-            if (cartaAJugar.acepta(this.getPozo())) {
-                jugador.removerCarta(cartaAJugar);
-                this.setPozo(cartaAJugar);
+    public JuegoUNO jugar(String jugador, Carta carta) {
+        Jugador currentJugador = this.getJugador(jugador);
+        //Carta cartaAJugar = currentJugador.getCarta(carta);
+        if(this.verJugadorTurno() == currentJugador) {
+            if (carta.acepta(this.getPozo())) {
+                currentJugador.removerCarta(carta);
+                this.setPozo(carta);
                 this.avanzarTurno();
-                cartaAJugar.applyEffect(this);
-                ultimoJugador = jugador;
+                carta.applyEffect(this);
+                ultimoJugador = currentJugador;
             }
-        }
-        return this;
-    }
-
-    public JuegoUNO jugarWildcard(Jugador jugador, String carta, String color) {
-        Carta cartaAJugar = jugador.getCarta(carta);
-        if (cartaAJugar.acepta(this.getPozo())) {
-            jugador.removerCarta(cartaAJugar);
-            Wildcard wildcard = new Wildcard(color);
-            this.setPozo(wildcard);
-            this.avanzarTurno();
-            ultimoJugador = jugador;
         }
         return this;
     }

@@ -1,20 +1,17 @@
 package Uno;
 
 public class Wildcard extends Carta{
-    String color;
-    String tipo;
 
-    public Wildcard(String color) {
-        this.color = color;
-        this.tipo = "wildcard";
+    public Wildcard() {
+        super("multicolor", "wildcard");
     }
 
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.color) || otra.coincideTipo(this.tipo);
+        return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
     }
 
     boolean coincideColor(String color) {
-        return this.color.equals(color);
+        return this.getColor().equals(color) || this.getColor().equals("multicolor");
     }
 
     boolean coincideNumero(int numero) {
@@ -22,12 +19,15 @@ public class Wildcard extends Carta{
     }
 
     boolean coincideTipo(String tipo) {
-        return this.tipo.equals(tipo);
+        return this.getTipo().equals(tipo);
     }
 
     public String toString() {
-        return  "wildcard " + color;
+        return  "wildcard";
     }
 
-    public String getColor(){ return color;}
+    public Wildcard as(String color) {
+        this.setColor(color);
+        return this;
+    }
 }
