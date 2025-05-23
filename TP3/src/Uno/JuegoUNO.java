@@ -61,6 +61,8 @@ public class JuegoUNO {
         return this;
     }
 
+    public boolean isJuegoTerminado(){ return this.juegoTerminado;}
+
     public JuegoUNO jugar(String jugador, Carta carta) {
         assert !juegoTerminado : "Juego terminado";
 
