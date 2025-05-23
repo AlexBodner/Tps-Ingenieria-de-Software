@@ -27,15 +27,7 @@ public class Jugador {
         return nombre;
     }
 
-    public boolean puedeJugar(Carta cartaAJugar){
-        return mano.contains(cartaAJugar);
-    }
-
-    public Carta getCarta(Carta carta){
-        return mano.stream()
-                .filter(c->c.toString().equals(carta.toString()))
-                .findFirst().orElse(new CartaInvalida());
-    }
+    public boolean tieneCarta(Carta cartaAJugar) { return mano.contains(cartaAJugar); }
 
     public void removerCarta(Carta cartaJugada) {
         mano.stream()
