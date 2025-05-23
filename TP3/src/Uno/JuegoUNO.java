@@ -64,9 +64,7 @@ public class JuegoUNO {
         Jugador currentJugador = this.getJugador(jugador);
         if(this.verJugadorTurno() == currentJugador) {
             assert currentJugador.tieneCarta(carta) : "El jugador no posee esa carta.";
-
             if (carta.acepta(this.getPozo())) {
-                print(carta);
                 currentJugador.removerCarta(carta);
                 this.setPozo(carta);
                 this.avanzarTurno();

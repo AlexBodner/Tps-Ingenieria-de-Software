@@ -7,7 +7,7 @@ public class Wildcard extends Carta{
     }
 
     boolean acepta(Carta otra) {
-        return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
+        return true;
     }
 
     boolean coincideColor(String color) {
