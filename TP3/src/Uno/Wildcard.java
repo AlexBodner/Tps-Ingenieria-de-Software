@@ -11,15 +11,7 @@ public class Wildcard extends Carta{
     }
 
     boolean coincideColor(String color) {
-        return this.getColor().equals(color) || this.getColor().equals("multicolor");
-    }
-
-    boolean coincideNumero(int numero) {
-        return true;
-    }
-
-    boolean coincideTipo(String tipo) {
-        return this.getTipo().equals(tipo);
+        return super.coincideColor(this.getColor()) || this.getColor().equals("multicolor");
     }
 
     public String toString() {

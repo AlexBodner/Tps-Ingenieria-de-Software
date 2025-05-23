@@ -17,18 +17,6 @@ public class Draw2 extends Carta{
         return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
     }
 
-    boolean coincideColor(String color) {
-        return color.equals(this.getColor());
-    }
-
-    boolean coincideNumero(int numero) {
-        return false;
-    }
-
-    boolean coincideTipo(String tipo) {
-        return this.getTipo().equals(tipo);
-    }
-
     public String toString() {
         return "+2 " + getColor();
     }

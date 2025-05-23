@@ -10,18 +10,6 @@ public class Skip extends Carta{
         return otra.coincideColor(this.getColor()) || otra.coincideTipo(this.getTipo());
     }
 
-    boolean coincideColor(String color) {
-        return this.getColor().equals(color);
-    }
-
-    boolean coincideNumero(int numero) {
-        return false;
-    }
-
-    boolean coincideTipo(String tipo) {
-        return this.getTipo().equals(tipo);
-    }
-
     public String toString() {
         return  "skip " + getColor();
     }

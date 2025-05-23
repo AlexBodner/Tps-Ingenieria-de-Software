@@ -11,16 +11,8 @@ class CartaNumerica extends Carta {
         return otra.coincideColor(this.getColor()) || otra.coincideNumero(this.numero);
     }
 
-    boolean coincideColor(String color) {
-        return this.getColor().equals(color);
-    }
-
     boolean coincideNumero(int numero) {
         return this.numero == numero;
-    }
-
-    boolean coincideTipo(String tipo) {
-        return this.getTipo().equals(tipo);
     }
 
     public String toString() {

@@ -10,9 +10,6 @@ abstract public class Carta {
     }
 
     abstract boolean acepta(Carta otra);
-    abstract boolean coincideColor(String color);
-    abstract boolean coincideNumero(int numero);
-    abstract boolean coincideTipo(String tipo);
     public  void applyEffect(JuegoUNO juego){
         return;
     };
@@ -20,4 +17,13 @@ abstract public class Carta {
     public String getTipo(){return tipo;}
     public String getColor(){return color;}
     public void setColor(String color){this.color = color;}
+    boolean coincideTipo(String tipo) {
+        return this.getTipo().equals(tipo);
+    }
+    boolean coincideColor(String color) {
+        return this.getColor().equals(color);
+    }
+    boolean coincideNumero(int numero) {
+        return false;
+    }
 }
