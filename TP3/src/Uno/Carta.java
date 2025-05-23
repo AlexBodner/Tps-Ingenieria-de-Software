@@ -3,6 +3,7 @@ package Uno;
 abstract public class Carta {
     private String tipo;
     private String color;
+    private boolean cantandoUno;
 
     public Carta(String color, String tipo) {
         this.tipo = tipo;
@@ -25,6 +26,12 @@ abstract public class Carta {
     }
     boolean coincideNumero(int numero) {
         return false;
+    }
+    boolean estaCantandoUno() {return cantandoUno;}
+
+    public Carta jugarAsUNO(){
+        this.cantandoUno = true;
+        return this;
     }
 
     @Override

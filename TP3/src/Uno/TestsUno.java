@@ -139,44 +139,23 @@ public class TestsUno {
     }
 
     @Test
-    public void test14DosJugadores4CartasLeCantanUNO(){
-        JuegoUNO juego = juego2Jugadores4Cartas();
-        assertEquals( 8, juego
-                .jugar("J1", new CartaNumerica("rojo", 1))
-                .cantarUno(juego.getJugador("J2"))
-                .getJugador("J1").cantidadCartas());
-    }
-
-    @Test
     public void test15DosJugadores4CartasAutoCantaUNO(){
         JuegoUNO juego = juego2Jugadores4Cartas();
         assertEquals( 1, juego
-                .jugar("J1", new CartaNumerica("rojo", 1))
-                .cantarUno(juego.getJugador("J1"))
+                .jugar("J1", new CartaNumerica("rojo", 1).jugarAsUNO())
                 .getJugador("J1").cantidadCartas());
     }
 
     @Test
     public void test16DosJugadores4CartaAutoCantaYLeCantanUNO(){
-        JuegoUNO juego = juego2Jugadores4Cartas();
-        assertEquals( 9, juego
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertEquals( 4, juego
                 .jugar("J1", new CartaNumerica("rojo", 1))
-                .cantarUno(juego.getJugador("J1"))
-                .cantarUno(juego.getJugador("J2"))
-                .getJugador("J2").cantidadCartas());
+                .jugar("J2", new Skip("rojo"))
+                .jugar("J4", new Wildcard().as("rojo").jugarAsUNO())
+                .getJugador("J4").cantidadCartas());
     }
 
-    @Test
-    public void test17CuatroJugadores11CartasDraw2(){
-        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
-        assertEquals(8, juego
-                .jugar("J1", new CartaNumerica("rojo", 1)) //J1
-                .jugar("J2", new CartaNumerica("verde", 1)) //J2
-                .jugar("J3", new CartaNumerica("verde", 3)) //J3
-                .jugar("J4", new CartaNumerica("amarillo", 3))//J4
-                .cantarUno(juego.getJugador("J2"))
-                .getJugador("J2").cantidadCartas());
-    }
 
     private static JuegoUNO juego2Jugadores4Cartas() {
         Jugador j1 = new Jugador("J1");

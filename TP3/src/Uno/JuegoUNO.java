@@ -12,6 +12,7 @@ public class JuegoUNO {
     Carta cartaPozo = new CartaVacia();
     boolean unoCantado = false;
     Jugador ultimoJugador;
+    boolean juegoTerminado = false;
 
     public JuegoUNO(ArrayList<Jugador> jugadores, ArrayList<Carta> mazo, ArrayList<Integer> cantidadPorJugador) {
         this.jugadores = jugadores;
@@ -61,6 +62,8 @@ public class JuegoUNO {
     }
 
     public JuegoUNO jugar(String jugador, Carta carta) {
+        assert !juegoTerminado : "Juego terminado";
+
         Jugador currentJugador = this.getJugador(jugador);
         if(this.verJugadorTurno() == currentJugador) {
             assert currentJugador.tieneCarta(carta) : "El jugador no posee esa carta.";
@@ -69,28 +72,15 @@ public class JuegoUNO {
                 this.setPozo(carta);
                 this.avanzarTurno();
                 carta.applyEffect(this);
-                ultimoJugador = currentJugador;
-            }
-        }
-        return this;
-    }
 
-    public JuegoUNO cantarUno(Jugador jugador){
-        if ( ultimoJugador == jugador ){
-            unoCantado = true;
-            return this;
-        }
-        else{
-            if (!unoCantado){
-                if(ultimoJugador.cantidadCartas()==1){
-                    ultimoJugador.recibirCartas(levantarDeMazo(7));
-                    unoCantado = true;
+                if (carta.estaCantandoUno()){
+                    if(currentJugador.cantidadCartas()!=1){
+                        currentJugador.recibirCartas(levantarDeMazo(2));
+                    }
                 }
-                else{
-                    jugador.recibirCartas(levantarDeMazo(7));
+                if (currentJugador.cantidadCartas()==0){
+                    juegoTerminado = true;
                 }
-            } else {
-                jugador.recibirCartas(levantarDeMazo(7));
             }
         }
         return this;
