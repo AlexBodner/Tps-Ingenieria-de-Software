@@ -30,8 +30,6 @@ public class Jugador {
     public boolean tieneCarta(Carta cartaAJugar) { return mano.contains(cartaAJugar); }
 
     public void removerCarta(Carta cartaJugada) {
-        mano.stream()
-                .filter(c-> c.coincideTipo(cartaJugada.getTipo())&&c.coincideColor(cartaJugada.getColor()))
-                .findFirst().orElse(new CartaInvalida());
+        mano.remove(cartaJugada);
     }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.io.IO.print;
+
 public class JuegoUNO {
     ArrayList<Carta> mazo;
     ArrayList<Jugador> jugadores;
@@ -48,10 +50,6 @@ public class JuegoUNO {
         return this;
     }
 
-    public boolean esSuTurno(Jugador jugador){
-        return jugadores.getFirst().getNombre().equals(jugador.getNombre());
-    }
-
     public Jugador verJugadorTurno() {
         return jugadores.getFirst();
     }
@@ -68,6 +66,7 @@ public class JuegoUNO {
             assert currentJugador.tieneCarta(carta) : "El jugador no posee esa carta.";
 
             if (carta.acepta(this.getPozo())) {
+                print(carta);
                 currentJugador.removerCarta(carta);
                 this.setPozo(carta);
                 this.avanzarTurno();

@@ -19,4 +19,20 @@ class CartaNumerica extends Carta {
         return getColor() + " " + numero;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (((Carta) obj).coincideTipo(this.getTipo())
+           && ((Carta) obj).coincideColor(this.getColor())
+           && ((Carta) obj).coincideNumero(this.numero)) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -57,7 +57,8 @@ public class TestsUno {
         juego.avanzarTurno();
         assertEquals( "J1", juego.reverse().verJugadorTurno().getNombre() );
     }
-    
+
+
 
     @Test
     public void test07CuatroJugadores8CartasJugadaPozo(){
@@ -121,7 +122,7 @@ public class TestsUno {
         assertEquals("wildcard", juego
                 .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("rojo", 1)) //J1
                 .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("verde", 1)) //J2
-                .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("verde", 3))
+                .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("verde", 3)) //J3
                 .jugar(juego.verJugadorTurno().getNombre(), new Wildcard().as("azul"))//J4
                 .getPozo().toString());
     }

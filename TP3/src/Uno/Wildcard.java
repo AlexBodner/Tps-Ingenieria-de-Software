@@ -22,4 +22,18 @@ public class Wildcard extends Carta{
         this.setColor(color);
         return this;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (((Carta) obj).coincideTipo(this.getTipo())) {
+            return true;
+        }
+        return false;
+    }
 }

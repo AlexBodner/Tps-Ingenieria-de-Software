@@ -26,4 +26,19 @@ abstract public class Carta {
     boolean coincideNumero(int numero) {
         return false;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (((Carta) obj).coincideTipo(this.getTipo())
+                && ((Carta) obj).coincideColor(this.getColor())) {
+            return true;
+        }
+        return false;
+    }
 }
