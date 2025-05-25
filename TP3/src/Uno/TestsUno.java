@@ -178,9 +178,8 @@ public class TestsUno {
                 .isJuegoTerminado());
     }
 
-
     @Test
-    public void test17TerminoJuegoVerdadero(){
+    public void test18TerminoJuegoVerdadero(){
         JuegoUNO juego = juego2Jugadores4CartasParaTerminar();
         assertTrue(juego
                 .jugar("J1", new CartaNumerica("rojo", 1))
@@ -190,11 +189,20 @@ public class TestsUno {
     }
 
     @Test
-    public void test18TerminoJuegoFalso(){
+    public void test19JugadaInvalidaSkip(){
         JuegoUNO juego = juego2Jugadores4CartasParaTerminar();
-        assertFalse(juego
+        assertTrue(juego
                 .jugar("J1", new CartaNumerica("rojo", 1))
+                .jugar("J2", new CartaNumerica("verde", 1))
+                .jugar("J1", new CartaNumerica("verde", 3))
                 .isJuegoTerminado());
+    }
+
+    @Test
+    public void test20JugadorNoPoseeCarta(){
+        JuegoUNO juego = juego2Jugadores4CartasParaTerminar();
+        assertThrows( AssertionError.class, () -> juego
+                .jugar("J1", new CartaNumerica("rojo", 5)));
     }
 
     private static JuegoUNO juego2Jugadores4CartasParaTerminar() {
