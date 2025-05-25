@@ -214,11 +214,31 @@ public class TestsUno {
     }
 
     @Test
-    public void test22JugadaInvalida(){
+    public void test22JugadaInvalidaSkip(){
         JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertThrows( AssertionError.class, () -> juego
                 .jugar("J1", new CartaNumerica("azul", 3))
                 .jugar("J2", new Skip("rojo")));
+    }
+
+    @Test
+    public void test23JugadaInvalidaDraw2(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertThrows( AssertionError.class, () -> juego
+                .jugar("J1", new CartaNumerica("rojo", 1))
+                .jugar("J2", new Skip("rojo"))
+                .jugar("J4", new Draw2("verde")));
+    }
+
+    @Test
+    public void test24JugadaValidaDraw2(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertEquals( "+2 verde", juego
+                .jugar("J1", new CartaNumerica("rojo", 1))
+                .jugar("J2", new CartaNumerica("verde", 1))
+                .jugar("J3", new CartaNumerica("verde", 3))
+                .jugar("J4", new Draw2("verde"))
+                .getPozo().toString());
     }
 
     private static JuegoUNO juego2Jugadores4CartasParaTerminar() {
