@@ -146,7 +146,7 @@ public class TestsUno {
 
     @Test
     public void test15AutoCantaUNOMal(){
-        JuegoUNO juego = juego2Jugadores4Cartas();
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
         assertEquals( 4, juego
                 .jugar("J1", new CartaNumerica("rojo", 1))
                 .jugar("J2", new Skip("rojo"))
