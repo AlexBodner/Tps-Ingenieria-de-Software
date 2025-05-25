@@ -10,8 +10,6 @@ public class JuegoUNO {
     ArrayList<Carta> mazo;
     ArrayList<Jugador> jugadores;
     Carta cartaPozo = new CartaVacia();
-    boolean unoCantado = false;
-    Jugador ultimoJugador;
     boolean juegoTerminado = false;
 
     public JuegoUNO(ArrayList<Jugador> jugadores, ArrayList<Carta> mazo, ArrayList<Integer> cantidadPorJugador) {
