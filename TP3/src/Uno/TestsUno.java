@@ -241,6 +241,43 @@ public class TestsUno {
                 .getPozo().toString());
     }
 
+    @Test
+    public void test25JugarAsUnoMalJugadoConUnaEnMano(){
+        JuegoUNO juego = juego2Jugadores2Cartas();
+
+        // Al primero ya le queda una carta y juega cantando UNO, entonces se le suman cartas y no gana
+        assertFalse( juego
+                .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("rojo", 1).jugarAsUNO())
+                .isJuegoTerminado() //J1
+        );
+
+        // El segundo juega bien y gana
+        assertTrue( juego
+                .jugar(juego.verJugadorTurno().getNombre(), new CartaNumerica("rojo", 3))
+                .isJuegoTerminado() //J1
+        );
+    }
+
+    private static JuegoUNO juego2Jugadores2Cartas() {
+        Jugador j1 = new Jugador("J1");
+        Jugador j2 = new Jugador("J2");
+        ArrayList<Jugador> jugadores = new ArrayList<>();
+        jugadores.add(j1);
+        jugadores.add(j2);
+
+        ArrayList<Carta> mazo = new ArrayList<>();
+        mazo.add(new CartaNumerica("rojo", 1)); // J1
+        mazo.add(new CartaNumerica("rojo", 3)); // J2
+        mazo.add(new CartaNumerica("rojo", 3));
+        mazo.add(new CartaNumerica("rojo", 3));
+
+        ArrayList<Integer> cantidadPorJugador = new ArrayList<>();
+        cantidadPorJugador.add(1);
+        cantidadPorJugador.add(1);
+
+        return new JuegoUNO(jugadores, mazo, cantidadPorJugador);
+    }
+
     private static JuegoUNO juego2Jugadores4CartasParaTerminar() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
