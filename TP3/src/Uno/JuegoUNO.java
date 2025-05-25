@@ -67,23 +67,21 @@ public class JuegoUNO {
         assert !juegoTerminado : "Juego terminado";
 
         Jugador currentJugador = this.getJugador(jugador);
-        if(this.verJugadorTurno() == currentJugador) {
-            assert currentJugador.tieneCarta(carta) : "El jugador no posee esa carta.";
-            if (carta.acepta(this.getPozo())) {
-                currentJugador.removerCarta(carta);
-                this.setPozo(carta);
-                this.avanzarTurno();
-                carta.applyEffect(this);
+        assert this.verJugadorTurno() == currentJugador : "No es el turno de este jugador";
+        assert currentJugador.tieneCarta(carta) : "El jugador no posee esa carta.";
+        assert carta.acepta(this.getPozo()) : "Jugada invalida";
+        currentJugador.removerCarta(carta);
+        this.setPozo(carta);
+        this.avanzarTurno();
+        carta.applyEffect(this);
 
-                if (carta.estaCantandoUno()){
-                    if(currentJugador.cantidadCartas()!=1){
-                        currentJugador.recibirCartas(levantarDeMazo(2));
-                    }
-                }
-                if (currentJugador.cantidadCartas()==0){
-                    juegoTerminado = true;
-                }
+        if (carta.estaCantandoUno()){
+            if(currentJugador.cantidadCartas()!=1){
+                currentJugador.recibirCartas(levantarDeMazo(2));
             }
+        }
+        if (currentJugador.cantidadCartas()==0){
+            juegoTerminado = true;
         }
         return this;
     }

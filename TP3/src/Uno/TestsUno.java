@@ -205,6 +205,22 @@ public class TestsUno {
                 .jugar("J1", new CartaNumerica("rojo", 5)));
     }
 
+    @Test
+    public void test21JugadaInvalida(){
+        JuegoUNO juego = juego2Jugadores4CartasParaTerminar();
+        assertThrows( AssertionError.class, () -> juego
+                .jugar("J1", new CartaNumerica("rojo", 1))
+                .jugar("J2", new CartaNumerica("azul", 3)));
+    }
+
+    @Test
+    public void test22JugadaInvalida(){
+        JuegoUNO juego = juego4Jugadores8CartasSkipReverseWildcard();
+        assertThrows( AssertionError.class, () -> juego
+                .jugar("J1", new CartaNumerica("azul", 3))
+                .jugar("J2", new Skip("rojo")));
+    }
+
     private static JuegoUNO juego2Jugadores4CartasParaTerminar() {
         Jugador j1 = new Jugador("J1");
         Jugador j2 = new Jugador("J2");
