@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UnoService {
@@ -44,10 +45,18 @@ public class UnoService {
         match.draw();
     }
 
-
     // devuelve la carta del tope del mazo
     public Card getActiveCard(UUID matchId) {
         Match match = getMatch(matchId);
         return match.activeCard();
+    }
+
+    // devuelve la mano del jugador que está en turno
+    public List<JsonCard> getPlayerHand(UUID matchId) {
+        Match match = getMatch(matchId);
+         return match.playerHand()                    // devuelve lista de cartas, quiero lista de jsons
+                 .stream()
+                 .map(Card::asJson)
+                 .collect(Collectors.toList());
     }
 }

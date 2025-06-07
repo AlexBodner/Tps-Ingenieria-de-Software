@@ -23,25 +23,31 @@ public class UnoController {
     }
 
     @PostMapping("newmatch")
-    public ResponseEntity newMatch(@RequestParam List<String> players) {
+    public ResponseEntity<UUID> newMatch(@RequestParam List<String> players) {
         return ResponseEntity.ok(unoService.newMatch(players));
     }
 
     @PostMapping("play/{matchId}/{player}")
-    public ResponseEntity play(@PathVariable UUID matchId, @PathVariable String player, @RequestBody JsonCard card ) {
+    public ResponseEntity<Void> play(@PathVariable UUID matchId, @PathVariable String player, @RequestBody JsonCard card ) {
         unoService.playCard(matchId, player, card);
         return ResponseEntity.ok().build(); // No entiendo bien lo del .build()
     }
 
     @PostMapping("draw/{matchId}/{player}")
-    public ResponseEntity drawCard( @PathVariable UUID matchId, @RequestParam String player ) {
+    public ResponseEntity<Void> drawCard( @PathVariable UUID matchId, @RequestParam String player ) {
         unoService.drawCard(matchId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("activecard/{matchId}")
-    public ResponseEntity activeCard( @PathVariable UUID matchId ) {
+    public ResponseEntity<JsonCard> activeCard( @PathVariable UUID matchId ) {
         Card active = unoService.getActiveCard(matchId);
         return ResponseEntity.ok(active.asJson());
+    }
+
+    @GetMapping("playerhand/{matchId}")
+    public ResponseEntity<List<JsonCard>> playerHand( @PathVariable UUID matchId ) {
+        List<JsonCard> hand = unoService.getPlayerHand(matchId);
+        return ResponseEntity.ok(hand);
     }
 }
