@@ -16,7 +16,10 @@ import java.util.UUID;
 public class UnoController {
     @Autowired
     UnoService unoService;
-
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
     @GetMapping("/hola")
     public ResponseEntity<String> holaMundo() {
         return new ResponseEntity<>("respuesta a Hola Mundo", HttpStatus.OK);

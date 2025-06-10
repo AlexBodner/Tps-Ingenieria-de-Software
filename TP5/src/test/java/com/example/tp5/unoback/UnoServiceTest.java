@@ -1,6 +1,6 @@
-package com.example.tp5.unoback.model;
+package com.example.tp4;
 
-import com.example.tp5.unoback.Service.UnoService;
+import com.example.tp4.service.UnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
