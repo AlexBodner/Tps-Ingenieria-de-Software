@@ -2,7 +2,8 @@ package com.example.tp5.unoback.model;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-
+import lombok.EqualsAndHashCode;
+@EqualsAndHashCode
 @Getter
 public class JsonCard {
     String color;

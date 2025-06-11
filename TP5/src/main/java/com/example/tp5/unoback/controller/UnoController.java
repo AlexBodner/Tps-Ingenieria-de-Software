@@ -20,6 +20,10 @@ public class UnoController {
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
     @GetMapping("/hola")
     public ResponseEntity<String> holaMundo() {
         return new ResponseEntity<>("respuesta a Hola Mundo", HttpStatus.OK);

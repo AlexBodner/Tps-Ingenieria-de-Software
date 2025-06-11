@@ -17,7 +17,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +30,8 @@ import java.util.UUID;
 
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.server.ResponseStatusException;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,7 +39,7 @@ public class UnoControllerTest {
     @Autowired
     MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @MockBean
+     @MockBean
     UnoService unoService;
     private UUID createMatchFor(List<String> players) throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/newmatch");
@@ -66,7 +70,6 @@ public class UnoControllerTest {
     @Test
     public void test02CreateMatchFailing() throws Exception {
         List<String> players = List.of();
-        String errorMessage = "Player list cannot be empty";
 
         Mockito.when(unoService.newMatch(players))
                 .thenThrow(new IllegalArgumentException("Player list cannot be empty"));
@@ -77,15 +80,26 @@ public class UnoControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
+    @Test
+    public void test03CreateMatchFailing1Player() throws Exception {
+        List<String> players = List.of("Alice");
+
+        Mockito.when(unoService.newMatch(players))
+                .thenThrow(new IllegalArgumentException("Player list cannot less than 2"));
+        mockMvc.perform( post( "/newmatch" )
+                        .contentType( MediaType.APPLICATION_JSON )
+                        .content(objectMapper.writeValueAsString(players)))
+                .andDo( print() )
+                .andExpect(status().isBadRequest());
+
+    }
 
     @Test
-    public void test03PlayInValidMatch() throws Exception { //de este no estoy nada seguro
+    public void test04PlayValidMatch() throws Exception { //de este no estoy  seguro
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         JsonCard card = new NumberCard("RED", 1).asJson();
         Mockito.doNothing().when(unoService).playCard(matchId, player, card);
-
-        ResponseEntity<Object> response = ResponseEntity.ok().build();
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/play/" + matchId + "/" + player)
@@ -94,6 +108,76 @@ public class UnoControllerTest {
                         )
                 .andExpect(status().isOk());
 
-        //Mockito.verify(unoService).play(eq(matchId), eq(player), eq(card));
+        Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
+    }
+    @Test
+    public void test05PlayInvalidMatch() throws Exception { //de este no estoy  seguro
+        UUID matchId = UUID.randomUUID();
+        String player = "Alice";
+        JsonCard card = new NumberCard("RED", 1).asJson();
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
+                .when(unoService)
+                .playCard(eq(matchId), eq(player), eq(card));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/play/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(card))
+                )
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
+    }
+
+    @Test
+    public void test06DrawCard() throws Exception {
+        // Arrange: Prepare test data
+        UUID matchId = UUID.randomUUID();
+        String player = "Jimmy";
+
+        Mockito.doNothing().when(unoService).drawCard(eq(matchId));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/draw/" + matchId + "/" + player))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        Mockito.verify(unoService).drawCard(eq(matchId));
+    }
+    @Test
+    public void test07DrawCardInvalidMatch() throws Exception {
+        // Arrange: Prepare test data
+        UUID matchId = UUID.randomUUID();
+        String player = "Mark Knopfler";
+
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
+                .when(unoService)
+                .drawCard(eq(matchId));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/draw/" + matchId + "/" + player))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(unoService).drawCard(eq(matchId));
+    }
+    @Test
+    public void test08ActiveCard() throws Exception {
+        // Arrange: Prepare test data
+        UUID matchId = UUID.randomUUID();
+        Card card = new NumberCard("RED", 1);
+        JsonCard expectedControllerResponse = card.asJson(); // The controller transforms Card to JsonCard
+
+        Mockito.when(unoService.getActiveCard(matchId)).thenReturn(card);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/activecard/" + matchId )
+                        .accept(MediaType.APPLICATION_JSON)) // Indicate that we expect JSON back
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
+                .andExpect(status().isOk());
+        Mockito.verify(unoService).getActiveCard(eq(matchId));
+
     }
 }

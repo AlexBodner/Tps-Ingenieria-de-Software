@@ -22,6 +22,9 @@ public class Match {
     }
 
     public Match(List<Card> deck, int cardsInHand, List<String> players) {
+        if (players.size()<2){
+            throw new IllegalArgumentException( "Must have at least 2 players" );
+        }
         discardPileHead = deck.remove(0);
         nextShift = (status) -> status.right();
         reverseShift = (status) -> status.left();
