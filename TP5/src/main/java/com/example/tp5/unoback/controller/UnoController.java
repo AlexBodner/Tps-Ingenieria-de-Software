@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+
+@RestController
 public class UnoController {
-    @Autowired
-    UnoService unoService;
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
@@ -24,14 +23,18 @@ public class UnoController {
     public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+    @ExceptionHandler(RuntimeException.class) public ResponseEntity<String> handleRuntime(RuntimeException exception) {
+        return ResponseEntity.badRequest().body( "Error: " + exception.getMessage());
+    }
+    @Autowired
+    UnoService unoService;
     @GetMapping("/hola")
     public ResponseEntity<String> holaMundo() {
-        return new ResponseEntity<>("respuesta a Hola Mundo", HttpStatus.OK);
+        return new ResponseEntity<>("Respuesta a Hola Mundo", HttpStatus.OK);
     }
-
-    @PostMapping("newmatch")
-    public ResponseEntity<UUID> newMatch(@RequestParam List<String> players) {
+    @PostMapping("newmatch") public ResponseEntity newMatch(@RequestParam List<String> players) {
         return ResponseEntity.ok(unoService.newMatch(players));
+        //return  ResponseEntity.ok(UUID.randomUUID());
     }
 
     @PostMapping("play/{matchId}/{player}")
@@ -41,7 +44,7 @@ public class UnoController {
     }
 
     @PostMapping("draw/{matchId}/{player}")
-    public ResponseEntity<Void> drawCard( @PathVariable UUID matchId, @RequestParam String player ) {
+    public ResponseEntity<Void> drawCard( @PathVariable UUID matchId, @PathVariable  String player ) {
         unoService.drawCard(matchId);
         return ResponseEntity.ok().build();
     }

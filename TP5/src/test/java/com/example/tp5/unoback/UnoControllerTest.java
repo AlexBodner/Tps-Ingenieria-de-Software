@@ -1,4 +1,5 @@
 package com.example.tp4;
+import com.example.tp4.model.Card;
 import com.example.tp4.model.JsonCard;
 import com.example.tp4.model.NumberCard;
 import com.example.tp4.service.UnoService;
@@ -32,14 +33,13 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UnoControllerTest {
     @Autowired
     MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
-     @MockBean
+    @MockBean
     UnoService unoService;
     private UUID createMatchFor(List<String> players) throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/newmatch");
@@ -73,12 +73,11 @@ public class UnoControllerTest {
 
         Mockito.when(unoService.newMatch(players))
                 .thenThrow(new IllegalArgumentException("Player list cannot be empty"));
-        mockMvc.perform( post( "/newmatch" )
-                        .contentType( MediaType.APPLICATION_JSON )
+        mockMvc.perform(post("/newmatch")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(players)))
-                .andDo( print() )
+                .andDo(print())
                 .andExpect(status().isBadRequest());
-
     }
     @Test
     public void test03CreateMatchFailing1Player() throws Exception {
@@ -180,4 +179,5 @@ public class UnoControllerTest {
         Mockito.verify(unoService).getActiveCard(eq(matchId));
 
     }
+    // Habria que hacer uno para cuando no exista MatchId o alpedo???
 }
