@@ -22,6 +22,9 @@ public class Match {
     }
 
     public Match(List<Card> deck, int cardsInHand, List<String> players) {
+        if (players == null){
+            throw new IllegalArgumentException( "Must have at least 2 players" );
+        }
         if (players.size()<2){
             throw new IllegalArgumentException( "Must have at least 2 players" );
         }

@@ -1,8 +1,8 @@
-package com.example.tp4;
-import com.example.tp4.model.Card;
-import com.example.tp4.model.JsonCard;
-import com.example.tp4.model.NumberCard;
-import com.example.tp4.service.UnoService;
+package com.example.tp5.unoback;
+import com.example.tp5.unoback.model.Card;
+import com.example.tp5.unoback.model.JsonCard;
+import com.example.tp5.unoback.model.NumberCard;
+import com.example.tp5.unoback.Service.UnoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

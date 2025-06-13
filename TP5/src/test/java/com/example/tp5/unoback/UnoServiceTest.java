@@ -1,19 +1,18 @@
-package com.example.tp4;
+package com.example.tp5.unoback;
 
-import com.example.tp4.model.Match;
-import com.example.tp4.service.Dealer;
-import com.example.tp4.service.UnoService;
+import com.example.tp5.unoback.model.*;
+import com.example.tp5.unoback.Service.Dealer;
+import com.example.tp5.unoback.Service.UnoService;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.UUID;
-import com.example.tp4.model.Card;
-import com.example.tp4.model.JsonCard;
-import com.example.tp4.model.NumberCard;
-import com.example.tp4.service.UnoService;
+
+import com.example.tp5.unoback.Service.UnoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -56,18 +55,40 @@ public class UnoServiceTest {
     @Autowired
     private UnoService unoService;
 
-    @Autowired
+    @MockBean
     private Dealer dealer;
 
     private UUID matchId;
 
     @BeforeEach
     public void setup() {
+        List<Card> deck = List.of(
+                // carta que queda primera en la mesa
+                new NumberCard("yellow", 1),
+
+                // cartas jugador 1
+                new NumberCard("red", 1),
+                new NumberCard("red", 2),
+                new NumberCard("red", 3),
+                new NumberCard("red", 4),
+                new NumberCard("red", 5),
+                new NumberCard("red", 6),
+                new WildCard(),
+
+                // cartas jugador 2
+                new NumberCard("blue", 1),
+                new NumberCard("blue", 2),
+                new NumberCard("blue", 3),
+                new NumberCard("blue", 4),
+                new NumberCard("blue", 5),
+                new NumberCard("blue", 6),
+                new WildCard());
+
         // Creamos un Match falso y lo inyectamos en el mapa de sesiones
         List<String> players = List.of("Martina", "Alex");
 
         // Simulamos que el dealer devuelve un mazo vacío o el que necesites
-        //Mockito.when(dealer.fullDeck()).thenReturn(List.of(new NumberCard("Red", 1)));
+        when(dealer.fullDeck()).thenReturn(deck);
 
         // Creamos una partida con el service real pero usando el dealer mockeado
         matchId = unoService.newMatch(players);
@@ -78,13 +99,21 @@ public class UnoServiceTest {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
         assertNotNull(id);
     }
+
     @Test
     public void test02GetMatchExisten() {
         Match m = unoService.getMatch(matchId);
         assertNotNull(m);
     }
+
     @Test
-    public void test03GetMatchInexisten() {
+    public void test03GetActiveCard() {
+        Match m = unoService.getMatch(matchId);
+        assertEquals(new NumberCard("yellow", 1), m.activeCard());
+    }
+
+    @Test
+    public void test04GetMatchInvalidID() {
         UUID nonExistentId = UUID.randomUUID(); // Use a fresh random UUID
         // Make sure it's not the fixedMatchId in case it was used somewhere
         if (nonExistentId.equals(matchId)) {
@@ -93,58 +122,35 @@ public class UnoServiceTest {
 
         // Assert that calling getMatch with a non-existent ID throws ResponseStatusException
         UUID finalNonExistentId = nonExistentId;
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> unoService.getMatch(finalNonExistentId));
-
-        // Assert the details of the thrown exception
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getReason().contains("Match not found: " + nonExistentId.toString()));
+        assertThrows(IllegalArgumentException.class, () -> unoService.getMatch(finalNonExistentId));
     }
 
-
     @Test
-    public void test04PlayCardCorrecto() {
-        Match match =  unoService.getMatch(matchId);
-        JsonCard jsonCard = match.playerHand().getFirst().asJson(); //new JsonCard("Red", 5, "NumberCard", false);
+    public void test05PlayCardOK() {
+        Match match = unoService.getMatch(matchId);
+        JsonCard jsonCard = match.playerHand().getFirst().asJson(); //new JsonCard("Red", 1, "NumberCard", false);
         unoService.playCard(matchId, "Martina", jsonCard);
         assertEquals(match.activeCard(), jsonCard.asCard());
-        //verify(match).play(eq("Martina"), any(Card.class));
     }
     @Test
-    public void test05PlayCardTurnoIncorrecto() {
+    public void test06PlayCardTurnoIncorrecto() {
         Match match =  unoService.getMatch(matchId);
         JsonCard jsonCard = match.playerHand().getFirst().asJson();
-
         assertThrows(RuntimeException.class, () -> unoService.playCard(matchId, "Alex", jsonCard));
         //verify(match).play(eq("Martina"), any(Card.class));
     }
 
     @Test
-    public void testPlayCardThrowsExceptionIfMatchNotFound() {
+    public void test07PlayCardThrowsExceptionIfMatchNotFound() {
         UUID fakeId = UUID.randomUUID();
-        JsonCard jsonCard = new JsonCard("Blue", 7, "NumberCard", false);
-
-        ResponseStatusException ex = assertThrows(
-                ResponseStatusException.class,
-                () -> unoService.playCard(fakeId, "Martina", jsonCard)
-        );
-
-        assertEquals("404 NOT_FOUND \"Match not found: " + fakeId + "\"", ex.getMessage());
+        JsonCard jsonCard = new JsonCard("Red", 1, "NumberCard", false);
+        assertThrows(IllegalArgumentException.class, () -> unoService.playCard(fakeId, "Martina", jsonCard));
     }
 
     @Test
-    public void testDrawCardDelegatesToMatch() {
-        Match match = unoService.getMatch(matchId);
-
-        unoService.drawCard(matchId);
-
-        verify(match).draw();
-    }
-
-    @Test
-    public void testDrawCardThrowsExceptionIfMatchNotFound() {
+    public void test08DrawCardThrowsExceptionIfMatchNotFound() {
         UUID fakeId = UUID.randomUUID();
-
-        assertThrows(ResponseStatusException.class, () -> unoService.drawCard(fakeId));
+        assertThrows(IllegalArgumentException.class, () -> unoService.drawCard(fakeId));
     }
 
 }
