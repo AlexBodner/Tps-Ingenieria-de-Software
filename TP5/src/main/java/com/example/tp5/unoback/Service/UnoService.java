@@ -32,10 +32,10 @@ public class UnoService {
         match.play(player, card);
     }
 
-    private Match getMatch(UUID matchId) {
+    public Match getMatch(UUID matchId) {
         Match match = sessions.get(matchId);
         if (match == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match not found: " + matchId);
+            throw new IllegalArgumentException( "Match not found for given ID" );
         }
         return match;
     }
