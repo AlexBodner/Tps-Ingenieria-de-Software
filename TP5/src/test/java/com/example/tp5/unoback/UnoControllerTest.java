@@ -127,9 +127,27 @@ public class UnoControllerTest {
 
         Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
     }
-
     @Test
-    public void test06DrawCard() throws Exception {
+    public void test06PlayInvalidJsonCard() throws Exception { 
+        UUID matchId = UUID.randomUUID();
+        String player = "Alice";
+        String InvalidJsonCardcard = "{ " +
+                "\"color\": \"" + "red" + "\", " +
+                "\"number\": \"" + 1 + "\", " +
+                "\"type\": \"" + "NumberCard" + "\", " +
+                "\"shout\": \"" + "false" + "\" " +
+                "";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/play/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(card)
+                )
+                .andExpect(status().isBadRequest());
+
+    }
+    @Test
+    public void test07DrawCard() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         String player = "Jimmy";
@@ -144,7 +162,7 @@ public class UnoControllerTest {
         Mockito.verify(unoService).drawCard(eq(matchId));
     }
     @Test
-    public void test07DrawCardInvalidMatch() throws Exception {
+    public void test08DrawCardInvalidMatch() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         String player = "Mark Knopfler";
@@ -161,7 +179,7 @@ public class UnoControllerTest {
         Mockito.verify(unoService).drawCard(eq(matchId));
     }
     @Test
-    public void test08ActiveCard() throws Exception {
+    public void test09ActiveCard() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         Card card = new NumberCard("RED", 1);
@@ -180,4 +198,43 @@ public class UnoControllerTest {
 
     }
     // Habria que hacer uno para cuando no exista MatchId o alpedo???
+
+        @Test
+    public void test10PlayerHand() throws Exception {
+        // Arrange: Prepare test data
+        UUID matchId = UUID.randomUUID();
+        Card card = new NumberCard("RED", 1);
+        JsonCard expectedControllerResponse = card.asJson(); // The controller transforms Card to JsonCard
+
+        Mockito.when(unoService.getActiveCard(matchId)).thenReturn(card);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/playerhand/" + matchId )
+                        .accept(MediaType.APPLICATION_JSON)) // Indicate that we expect JSON back
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
+                .andExpect(status().isOk());
+        Mockito.verify(unoService).getActiveCard(eq(matchId));
+
+    }
+        @Test
+    public void test11PlayerHandInvalidJsonCard() throws Exception { 
+        UUID matchId = UUID.randomUUID();
+        String player = "Alice";
+        String InvalidJsonCardcard = "{ " +
+                "\"color\": \"" + "red" + "\", " +
+                "\"number\": \"" + 1 + "\", " +
+                "\"type\": \"" + "NumberCard" + "\", " +
+                "\"shout\": \"" + "false" + "\" " +
+                "";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/playerhand/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(card)
+                )
+                .andExpect(status().isBadRequest());
+
+    }
 }
