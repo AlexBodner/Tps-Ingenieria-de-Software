@@ -150,7 +150,8 @@ public class UnoServiceTest {
     @Test
     public void test08DrawCardThrowsExceptionIfMatchNotFound() {
         UUID fakeId = UUID.randomUUID();
-        assertThrows(IllegalArgumentException.class, () -> unoService.drawCard(fakeId));
+        String player = "Meghan";
+        assertThrows(IllegalArgumentException.class, () -> unoService.drawCard(fakeId, player));
     }
 
 }

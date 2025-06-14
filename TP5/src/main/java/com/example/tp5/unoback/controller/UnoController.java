@@ -46,7 +46,7 @@ public class UnoController {
 
     @PostMapping("draw/{matchId}/{player}")
     public ResponseEntity<Void> drawCard( @PathVariable UUID matchId, @PathVariable  String player ) {
-        unoService.drawCard(matchId);
+        unoService.drawCard(matchId, player);
         return ResponseEntity.ok().build();
     }
 

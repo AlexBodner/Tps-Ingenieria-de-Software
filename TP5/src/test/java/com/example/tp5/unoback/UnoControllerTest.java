@@ -187,14 +187,14 @@ public class UnoControllerTest {
         UUID matchId = UUID.randomUUID();
         String player = "Jimmy";
 
-        Mockito.doNothing().when(unoService).drawCard(eq(matchId));
+        Mockito.doNothing().when(unoService).drawCard(eq(matchId), eq(player));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/draw/" + matchId + "/" + player))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        Mockito.verify(unoService).drawCard(eq(matchId));
+        Mockito.verify(unoService).drawCard(eq(matchId), eq(player));
     }
 
     @Test
@@ -205,14 +205,14 @@ public class UnoControllerTest {
 
         Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND))
                 .when(unoService)
-                .drawCard(eq(matchId));
+                .drawCard(eq(matchId), eq(player));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/draw/" + matchId + "/" + player))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        Mockito.verify(unoService).drawCard(eq(matchId));
+        Mockito.verify(unoService).drawCard(eq(matchId), eq(player));
     }
     @Test
     public void test11DrawCardNonExistentMatch() throws Exception {
