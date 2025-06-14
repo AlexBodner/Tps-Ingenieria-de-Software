@@ -180,6 +180,7 @@ public class UnoControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
+
     @Test
     public void test09DrawCard() throws Exception {
         // Arrange: Prepare test data
@@ -197,7 +198,7 @@ public class UnoControllerTest {
     }
 
     @Test
-    public void test08DrawCardInvalidMatch() throws Exception {
+    public void test10DrawCardInvalidMatch() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         String player = "Mark Knopfler";
@@ -214,7 +215,7 @@ public class UnoControllerTest {
         Mockito.verify(unoService).drawCard(eq(matchId));
     }
     @Test
-    public void test09ActiveCard() throws Exception {
+    public void test11DrawCardNonExistentMatch() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         Card card = new NumberCard("RED", 1);
@@ -230,31 +231,71 @@ public class UnoControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
                 .andExpect(status().isOk());
         Mockito.verify(unoService).getActiveCard(eq(matchId));
-
     }
-    // Habria que hacer uno para cuando no exista MatchId o alpedo???
 
     @Test
-    public void test10PlayerHand() throws Exception {
-        // Arrange: Prepare test data
+    public void test12DrawCardNoMatchPassed() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/draw/" ))
+                        .andDo(print())
+                        .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void test13DrawCardNoPlayerPassed() throws Exception {
+        UUID matchId = UUID.randomUUID();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/draw/" + "/" + matchId))
+                        .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void test14ActiveCard() throws Exception {
         UUID matchId = UUID.randomUUID();
         Card card = new NumberCard("RED", 1);
-        JsonCard expectedControllerResponse = card.asJson(); // The controller transforms Card to JsonCard
+        JsonCard expectedControllerResponse = card.asJson(); // El controller transforma Card a JsonCard
 
         Mockito.when(unoService.getActiveCard(matchId)).thenReturn(card);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/playerhand/" + matchId )
-                        .accept(MediaType.APPLICATION_JSON)) // Indicate that we expect JSON back
+                        .get("/activecard/" + matchId )
+                        .accept(MediaType.APPLICATION_JSON)) // Indica q esperamos un JSON
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
                 .andExpect(status().isOk());
+        Mockito.verify(unoService).getActiveCard(eq(matchId));
 
     }
 
     @Test
-    public void test11PlayerHandInvalidJsonCard() throws Exception { 
+    public void test15ActiveCardNoMatchIdPassed() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/activecard/" )
+                        .accept(MediaType.APPLICATION_JSON)) // Indica q esperamos un JSON
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void test16PlayerHand() throws Exception {
+        UUID matchId = UUID.randomUUID();
+        Card card = new NumberCard("RED", 1);
+        JsonCard[] expectedControllerResponse = new JsonCard[] { card.asJson() };
+
+        Mockito.when(unoService.getPlayerHand(matchId)).thenReturn(List.of(card.asJson()));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/playerhand/" + matchId)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void test17PlayerHandInvalidJsonCard() throws Exception {
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         String InvalidJsonCardcard = "{ " +
@@ -271,5 +312,47 @@ public class UnoControllerTest {
                 )
                 .andExpect(status().isBadRequest());
 
+    }
+
+    @Test
+    public void test18PlayerHandNoMatchPassed() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/playerhand/" )
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void test19PlayCardThatDoesNotMatchActiveCard() throws Exception {
+        UUID matchId = UUID.randomUUID();
+        JsonCard card = new NumberCard("Green", 1).asJson();
+        String player = "Alice";
+        Mockito.doThrow(new RuntimeException("Card does not match Color, Number or Kind"))
+                .when(unoService).playCard(matchId, player, card);
+
+        mockMvc.perform(post("/play/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(card)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void test20isGameover() throws Exception {
+        UUID matchId = UUID.randomUUID();
+        String player = "Alice";
+        JsonCard winningCard = new JsonCard("Red", 2, "NumberCard", false);
+
+        // Simular que playCard se ejecuta normalmente
+        Mockito.doNothing().when(unoService).playCard(matchId, player, winningCard);
+
+        // Simular que el juego terminó luego de esta jugada
+        Mockito.when(unoService.isGameOver(matchId)).thenReturn(true);
+
+        // Act & Assert
+        mockMvc.perform(post("/play/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(winningCard)))
+                .andExpect(status().isOk()); // ajusta según tu controller
     }
 }
