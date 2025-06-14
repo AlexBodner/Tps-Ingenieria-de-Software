@@ -322,4 +322,15 @@ public class UnoServiceTest {
         });
     }
 
+    @Test
+    public void test21PlayCardAdvancesTurn() {
+        Match match = unoService.getMatch(matchId);
+        JsonCard jsonCard1 = match.playerHand().get(0).asJson();
+        JsonCard jsonCard2 = match.playerHand().get(1).asJson();
+        unoService.playCard(matchId, "Martina", jsonCard1);
+        // play card avanza el turno y ahora deberia jugar Alex
+        assertThrows(RuntimeException.class, () -> unoService.playCard(matchId, "Martina", jsonCard2));
+    }
+
+
 }
