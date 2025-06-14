@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
@@ -94,7 +95,7 @@ public class UnoControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
-
+    // merge
     @Test
     public void test04PlayValidMatch() throws Exception { //de este no estoy  seguro
         UUID matchId = UUID.randomUUID();
@@ -106,7 +107,7 @@ public class UnoControllerTest {
                         .post("/play/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
-                        )
+                )
                 .andExpect(status().isOk());
 
         Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
@@ -123,7 +124,7 @@ public class UnoControllerTest {
                         .post("/play/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
-                        )
+                )
                 .andExpect(status().isNotFound());
     }
 
@@ -132,13 +133,12 @@ public class UnoControllerTest {
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         JsonCard card = new NumberCard("RED", 1).asJson();
-        Mockito.doNothing().when(unoService).playCard(matchId, player, card);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/play/" + matchId + "/" )
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
-                        )
+                )
                 .andExpect(status().isNotFound());
     }
 
@@ -256,7 +256,7 @@ public class UnoControllerTest {
         Card card = new NumberCard("RED", 1);
         JsonCard expectedControllerResponse = card.asJson(); // El controller transforma Card a JsonCard
 
-        Mockito.when(unoService.getActiveCard(matchId)).thenReturn(card);
+        Mockito.when(unoService.getPlayerHand(matchId)).thenReturn(List.of(card.asJson()));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/activecard/" + matchId )
