@@ -356,7 +356,7 @@ public class UnoServiceTest {
                 new NumberCard("blue", 1),
                 new NumberCard("green", 1),
 
-                // cartas jugador 2
+                // cartas jugador 3
                 new WildCard(),
                 new ReverseCard("green"),
                 new ReverseCard("red"),
