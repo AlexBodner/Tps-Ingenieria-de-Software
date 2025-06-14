@@ -40,9 +40,9 @@ public class UnoService {
         return match;
     }
 
-    public void drawCard(UUID matchId) {
+    public void drawCard(UUID matchId, String player) {
         Match match = getMatch(matchId);
-        match.draw();
+        match.drawCard(player);
     }
 
     // devuelve la carta del tope del mazo
@@ -60,7 +60,7 @@ public class UnoService {
                  .collect(Collectors.toList());
     }
 
-    public Object isGameOver(UUID matchId) {
+    public boolean isGameOver(UUID matchId) {
         Match match = getMatch(matchId);
         return match.isOver();
     }
