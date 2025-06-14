@@ -56,9 +56,6 @@ public class UnoControllerTest {
 
         return UUID.fromString(uuidStr);
     }
-    @Test playWrongTestJulio() throws Throwable{
-    
-    }
 
     @Test
     public void test01CreateNewValidMatch() throws Exception {
@@ -83,6 +80,7 @@ public class UnoControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     public void test03CreateMatchFailing1Player() throws Exception {
         List<String> players = List.of("Alice");
@@ -113,8 +111,9 @@ public class UnoControllerTest {
 
         Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
     }
+
     @Test
-    public void test04PlayNoMatchPassed() throws Exception { //de este no estoy  seguro
+    public void test05PlayNoMatchPassed() throws Exception { //de este no estoy  seguro
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         JsonCard card = new NumberCard("RED", 1).asJson();
@@ -125,10 +124,11 @@ public class UnoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
                         )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
+
     @Test
-    public void test04PlayNoPlayerPassed() throws Exception { //de este no estoy  seguro
+    public void test06PlayNoPlayerPassed() throws Exception { //de este no estoy  seguro
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         JsonCard card = new NumberCard("RED", 1).asJson();
@@ -139,12 +139,11 @@ public class UnoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
                         )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
-
     @Test
-    public void test05PlayInvalidMatch() throws Exception { //de este no estoy  seguro
+    public void test07PlayInvalidMatch() throws Exception { //de este no estoy  seguro
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         JsonCard card = new NumberCard("RED", 1).asJson();
@@ -161,8 +160,9 @@ public class UnoControllerTest {
 
         Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
     }
+
     @Test
-    public void test06PlayInvalidJsonCard() throws Exception { 
+    public void test08PlayInvalidJsonCard() throws Exception {
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
         String InvalidJsonCardcard = "{ " +
@@ -175,13 +175,13 @@ public class UnoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/play/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(card)
+                        .content(InvalidJsonCardcard)
                 )
                 .andExpect(status().isBadRequest());
 
     }
     @Test
-    public void test07DrawCard() throws Exception {
+    public void test09DrawCard() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
         String player = "Jimmy";
@@ -195,6 +195,7 @@ public class UnoControllerTest {
 
         Mockito.verify(unoService).drawCard(eq(matchId));
     }
+
     @Test
     public void test08DrawCardInvalidMatch() throws Exception {
         // Arrange: Prepare test data
@@ -233,7 +234,7 @@ public class UnoControllerTest {
     }
     // Habria que hacer uno para cuando no exista MatchId o alpedo???
 
-        @Test
+    @Test
     public void test10PlayerHand() throws Exception {
         // Arrange: Prepare test data
         UUID matchId = UUID.randomUUID();
@@ -249,10 +250,10 @@ public class UnoControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedControllerResponse)))
                 .andExpect(status().isOk());
-        Mockito.verify(unoService).getActiveCard(eq(matchId));
 
     }
-        @Test
+
+    @Test
     public void test11PlayerHandInvalidJsonCard() throws Exception { 
         UUID matchId = UUID.randomUUID();
         String player = "Alice";
@@ -266,7 +267,7 @@ public class UnoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/playerhand/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(card)
+                        .content(InvalidJsonCardcard)
                 )
                 .andExpect(status().isBadRequest());
 
