@@ -59,4 +59,9 @@ public class UnoService {
                  .map(Card::asJson)
                  .collect(Collectors.toList());
     }
+
+    public Object isGameOver(UUID matchId) {
+        Match match = getMatch(matchId);
+        return match.isOver();
+    }
 }

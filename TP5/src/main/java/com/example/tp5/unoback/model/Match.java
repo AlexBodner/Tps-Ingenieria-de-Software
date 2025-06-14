@@ -22,6 +22,7 @@ public class Match {
     }
 
     public Match(List<Card> deck, int cardsInHand, List<String> players) {
+        System.out.print(players);
         if (players == null){
             throw new IllegalArgumentException( "Must have at least 2 players" );
         }
@@ -32,7 +33,7 @@ public class Match {
         nextShift = (status) -> status.right();
         reverseShift = (status) -> status.left();
 
-        Playing first = new Playing(players.getFirst(), new ArrayList(deck.subList(0, cardsInHand)));
+        Playing first = new Playing(players.get(0), new ArrayList(deck.subList(0, cardsInHand)));
         deck.subList(0, cardsInHand).clear();
 
         Playing st = first;
