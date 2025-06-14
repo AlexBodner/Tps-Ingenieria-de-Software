@@ -332,5 +332,49 @@ public class UnoServiceTest {
         assertThrows(RuntimeException.class, () -> unoService.playCard(matchId, "Martina", jsonCard2));
     }
 
+    @Test
+    public void test22ReverseCardChangesDirection() {
+        List<Card> specialDeck = List.of(
+                // carta que queda primera en la mesa
+                new NumberCard("yellow", 1),
+
+                // cartas jugador 1
+                new WildCard(),
+                new ReverseCard("yellow"),
+                new ReverseCard("blue"),
+                new SkipCard("green"),
+                new SkipCard("red"),
+                new NumberCard("red", 1),
+                new NumberCard("yellow", 1),
+
+                // cartas jugador 2
+                new WildCard(),
+                new ReverseCard("green"),
+                new ReverseCard("red"),
+                new SkipCard("yellow"),
+                new SkipCard("blue"),
+                new NumberCard("blue", 1),
+                new NumberCard("green", 1),
+
+                // cartas jugador 2
+                new WildCard(),
+                new ReverseCard("green"),
+                new ReverseCard("red"),
+                new SkipCard("yellow"),
+                new SkipCard("blue"),
+                new NumberCard("blue", 1),
+                new NumberCard("green", 1));
+
+        List<String> specialPlayers = List.of("Martina", "Alex", "Sofia");
+        when(dealer.fullDeck()).thenReturn(specialDeck);
+        UUID specialMatchId = unoService.newMatch(specialPlayers);
+
+        JsonCard jsCard1 = new JsonCard("yellow", null, "ReverseCard", false);
+        JsonCard jsCard2 = new JsonCard("blue", 1, "NumberCard", false);
+        unoService.playCard(specialMatchId, "Martina", jsCard1);
+        // seria el turno de Alex, pero como es reverseCard ahora debe ir Sofia
+        assertThrows(RuntimeException.class, () -> unoService.playCard(specialMatchId, "Alex", jsCard2));
+
+    }
 
 }
