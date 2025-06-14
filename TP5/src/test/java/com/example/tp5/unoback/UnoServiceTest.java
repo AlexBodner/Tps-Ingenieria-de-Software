@@ -82,7 +82,11 @@ public class UnoServiceTest {
                 new NumberCard("blue", 4),
                 new NumberCard("blue", 5),
                 new NumberCard("blue", 6),
-                new WildCard());
+                new WildCard(),
+
+                // cartas extra para el deck
+                new NumberCard("blue", 1),
+                new NumberCard("green", 1));
 
         // Creamos un Match falso y lo inyectamos en el mapa de sesiones
         List<String> players = List.of("Martina", "Alex");
@@ -96,24 +100,31 @@ public class UnoServiceTest {
 
     @Test
     public void test01NewMatchCreatesMatch() {
-        UUID id = unoService.newMatch(List.of("Martina", "Alex"));
-        assertNotNull(id);
+        assertNotNull(matchId);
     }
 
     @Test
-    public void test02GetMatchExiste() {
+    public void test02NewMatchOnePlayer() {
+        List<String> players = List.of("Martina");
+        assertThrows(RuntimeException.class, () -> {
+            unoService.newMatch(players);
+        });
+    }
+
+    @Test
+    public void test03GetMatchExiste() {
         Match m = unoService.getMatch(matchId);
         assertNotNull(m);
     }
 
     @Test
-    public void test03GetActiveCard() {
+    public void test04GetActiveCard() {
         Match m = unoService.getMatch(matchId);
         assertEquals(new NumberCard("yellow", 1), m.activeCard());
     }
 
     @Test
-    public void test04MultipleParallelMatches() {
+    public void test05MultipleParallelMatches() {
         UUID id1 = unoService.newMatch(List.of("Martina", "Alex"));
         UUID id2 = unoService.newMatch(List.of("Pedro", "Sofia"));
 
@@ -132,9 +143,8 @@ public class UnoServiceTest {
         assertEquals(7, hand2.size());
     }
 
-
     @Test
-    public void test05GetActiveCardInvalidMatch() {
+    public void test06GetActiveCardInvalidMatch() {
         UUID fakeMatchId = UUID.randomUUID();
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -143,7 +153,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test06GetPlayerHandInvalidMatch() {
+    public void test07GetPlayerHandInvalidMatch() {
         UUID fakeMatchId = UUID.randomUUID();
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -152,7 +162,48 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test07DrawCardInvalidMatch() {
+    public void test08PlayerHand() {
+        List<JsonCard> hand = unoService.getPlayerHand(matchId);
+        assertNotNull(hand);
+        assertEquals(7, hand.size());
+
+        // mano de Martina
+        assertEquals("red", hand.get(0).getColor());
+        assertEquals(1, hand.get(0).getNumber());
+
+        assertEquals("red", hand.get(1).getColor());
+        assertEquals(2, hand.get(1).getNumber());
+
+        assertEquals("red", hand.get(2).getColor());
+        assertEquals(3, hand.get(2).getNumber());
+
+        assertEquals("red", hand.get(3).getColor());
+        assertEquals(4, hand.get(3).getNumber());
+
+        assertEquals("red", hand.get(4).getColor());
+        assertEquals(5, hand.get(4).getNumber());
+
+        assertEquals("red", hand.get(5).getColor());
+        assertEquals(6, hand.get(5).getNumber());
+
+        assertEquals("", hand.get(6).getColor());
+        assertEquals(null, hand.get(6).getNumber());
+
+        for (JsonCard card : hand) {
+            assertNotNull(card.getColor());
+            assertNotNull(card.getType());
+        }
+    }
+
+    @Test
+    public void test09DrawCardSuma1() {
+        int handSizeInicial = unoService.getPlayerHand(matchId).size();
+        unoService.drawCard(matchId, "Martina");
+        assertEquals(handSizeInicial + 1, unoService.getPlayerHand(matchId).size());
+    }
+
+    @Test
+    public void test10DrawCardInvalidMatch() {
         UUID fakeMatchId = UUID.randomUUID();
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -161,7 +212,14 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test08GetMatchInvalidID() {
+    public void test11DrawCardTurnoIncorrecto() {
+        assertThrows(RuntimeException.class, () -> {
+            unoService.drawCard(matchId, "Alex");
+        });
+    }
+
+    @Test
+    public void test12GetMatchInvalidID() {
         UUID nonExistentId = UUID.randomUUID(); // Use a fresh random UUID
         // Make sure it's not the fixedMatchId in case it was used somewhere
         if (nonExistentId.equals(matchId)) {
@@ -174,7 +232,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test09WildCardWithColor() {
+    public void test13WildCardWithColor() {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
         JsonCard wild = new JsonCard("Blue", null, "WildCard", false);
 
@@ -188,7 +246,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test10PlayCardOK() {
+    public void test14PlayCardOK() {
         Match match = unoService.getMatch(matchId);
         JsonCard jsonCard = match.playerHand().getFirst().asJson(); //new JsonCard("Red", 1, "NumberCard", false);
         unoService.playCard(matchId, "Martina", jsonCard);
@@ -196,7 +254,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test11PlayCardTurnoIncorrecto() {
+    public void test15PlayCardTurnoIncorrecto() {
         Match match =  unoService.getMatch(matchId);
         JsonCard jsonCard = match.playerHand().getFirst().asJson();
         assertThrows(RuntimeException.class, () -> unoService.playCard(matchId, "Alex", jsonCard));
@@ -204,7 +262,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test12InvalidCardType() {
+    public void test16InvalidCardType() {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
         JsonCard invalid = new JsonCard("Red", 1, "InvalidCardType", false);
 
@@ -214,21 +272,21 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test13PlayCardThrowsExceptionIfMatchNotFound() {
+    public void test17PlayCardThrowsExceptionIfMatchNotFound() {
         UUID fakeId = UUID.randomUUID();
         JsonCard jsonCard = new JsonCard("Red", 1, "NumberCard", false);
         assertThrows(IllegalArgumentException.class, () -> unoService.playCard(fakeId, "Martina", jsonCard));
     }
 
     @Test
-    public void test14DrawCardThrowsExceptionIfMatchNotFound() {
+    public void test18DrawCardThrowsExceptionIfMatchNotFound() {
         UUID fakeId = UUID.randomUUID();
         String player = "Meghan";
         assertThrows(IllegalArgumentException.class, () -> unoService.drawCard(fakeId, player));
     }
 
     @Test
-    public void test15ConvertJsonCardToCard() {
+    public void test19ConvertJsonCardToCard() {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
 
         List<JsonCard> testCards = List.of(
@@ -251,7 +309,7 @@ public class UnoServiceTest {
     }
 
     @Test
-    public void test16UnoShout() {
+    public void test20UnoShout() {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
         JsonCard shoutedCard = new JsonCard("Red", 1, "NumberCard", true);
 
@@ -263,6 +321,5 @@ public class UnoServiceTest {
             }
         });
     }
-
 
 }
