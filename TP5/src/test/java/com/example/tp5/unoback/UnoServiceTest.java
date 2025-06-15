@@ -425,4 +425,13 @@ public class UnoServiceTest {
         assertThrows(RuntimeException.class, () -> unoService.playCard(specialMatchId, "Alex", cardRed1Shout));
 
     }
+
+    // Se podria hacer un test de cannotDrawCardOnGameOver, pero es demasiado de modelo.
+    @Test
+    public void test24NewMatchNoPlayers() {
+        List<String> players = List.of();
+        assertThrows(RuntimeException.class, () -> {
+            unoService.newMatch(players);
+        });
+    }
 }
