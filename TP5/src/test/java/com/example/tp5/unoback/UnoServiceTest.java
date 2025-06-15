@@ -238,11 +238,7 @@ public class UnoServiceTest {
         JsonCard wild = new JsonCard("Blue", null, "WildCard", false);
 
         assertDoesNotThrow(() -> {
-            try {
                 unoService.playCard(id, "Martina", wild);
-            } catch (Exception e) {
-                // Ignoramos errores
-            }
         });
     }
 
@@ -287,38 +283,67 @@ public class UnoServiceTest {
 
     @Test
     public void test19ConvertJsonCardToCard() {
+        List<Card> specialDeck = List.of(
+                // carta que queda primera en la mesa
+                new NumberCard("yellow", 1),
+
+                // cartas jugador 1
+                new WildCard(),
+                new NumberCard("blue", 1),
+                new ReverseCard("blue"),
+                new SkipCard("yellow"),
+                new SkipCard("blue"),
+                new Draw2Card("yellow"),
+                new Draw2Card("blue"),
+
+                // cartas jugador 2
+                new WildCard(),
+                new ReverseCard("green"),
+                new ReverseCard("red"),
+                new SkipCard("yellow"),
+                new SkipCard("blue"),
+                new NumberCard("blue", 1),
+                new NumberCard("blue", 2),
+
+                // cartas pozo
+                new NumberCard("red", 2),
+                new NumberCard("green", 2),
+                new NumberCard("blue", 2),
+                new NumberCard("yellow", 2),
+                new NumberCard("green", 4));
+
+        when(dealer.fullDeck()).thenReturn(specialDeck);
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
 
-        List<JsonCard> testCards = List.of(
-                new JsonCard("Red", 5, "NumberCard", false),
-                new JsonCard("Blue", null, "SkipCard", false),
-                new JsonCard("Green", null, "ReverseCard", false),
-                new JsonCard("Yellow", null, "Draw2Card", false),
-                new JsonCard("Red", null, "WildCard", false)
-        );
+        JsonCard jc1 = new JsonCard("blue", 1, "NumberCard", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Martina", jc1);});
 
-        for (JsonCard jc : testCards) {
-            assertDoesNotThrow(() -> {
-                try {
-                    unoService.playCard(id, "Martina", jc);
-                } catch (Exception e) {
-                    // Ignoramos errores de juego, solo vemos si convierte biem
-                }
-            });
-        }
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Alex", jc1);});
+
+        JsonCard jc2 = new JsonCard("blue", null, "ReverseCard", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Martina", jc2);});
+
+        JsonCard jc3 = new JsonCard("blue", 2, "NumberCard", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Alex", jc3);});
+
+        JsonCard jc4 = new JsonCard("blue", null, "SkipCard", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Martina", jc4);});
+
+        JsonCard jc5 = new JsonCard("blue", null, "Draw2Card", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Martina", jc5);});
+
+        JsonCard jc6 = new JsonCard("red", null, "WildCard", false);
+        assertDoesNotThrow(() -> {unoService.playCard(id, "Alex", jc6);});
+
     }
 
     @Test
     public void test20UnoShout() {
         UUID id = unoService.newMatch(List.of("Martina", "Alex"));
-        JsonCard shoutedCard = new JsonCard("Red", 1, "NumberCard", true);
+        JsonCard shoutedCard = new JsonCard("red", 1, "NumberCard", true);
 
         assertDoesNotThrow(() -> {
-            try {
                 unoService.playCard(id, "Martina", shoutedCard);
-            } catch (Exception e) {
-                // de nuevo, ignoramos errores de juego
-            }
         });
     }
 
@@ -376,6 +401,7 @@ public class UnoServiceTest {
         assertThrows(RuntimeException.class, () -> unoService.playCard(specialMatchId, "Alex", jsCard2));
 
     }
+
     @Test
     public void test23CannotPlayOnGameOver() {
         List<Card> specialDeck = List.of(
@@ -426,7 +452,6 @@ public class UnoServiceTest {
 
     }
 
-    // Se podria hacer un test de cannotDrawCardOnGameOver, pero es demasiado de modelo.
     @Test
     public void test24NewMatchNoPlayers() {
         List<String> players = List.of();
