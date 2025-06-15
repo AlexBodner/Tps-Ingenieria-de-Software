@@ -98,6 +98,7 @@ public class UnoServiceTest {
         matchId = unoService.newMatch(players);
     }
 
+
     @Test
     public void test01NewMatchCreatesMatch() {
         assertNotNull(matchId);
@@ -258,7 +259,6 @@ public class UnoServiceTest {
         Match match =  unoService.getMatch(matchId);
         JsonCard jsonCard = match.playerHand().getFirst().asJson();
         assertThrows(RuntimeException.class, () -> unoService.playCard(matchId, "Alex", jsonCard));
-        //verify(match).play(eq("Martina"), any(Card.class));
     }
 
     @Test
@@ -376,5 +376,53 @@ public class UnoServiceTest {
         assertThrows(RuntimeException.class, () -> unoService.playCard(specialMatchId, "Alex", jsCard2));
 
     }
+    @Test
+    public void test23CannotPlayOnGameOver() {
+        List<Card> specialDeck = List.of(
+                // carta que queda primera en la mesa
+                new NumberCard("red", 1),
 
+                // cartas jugador 1
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+
+                // cartas jugador 2
+                new NumberCard("red", 1),
+                new NumberCard("red", 2),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+                new NumberCard("red", 1),
+
+                // cartas extra para el deck
+                new NumberCard("red", 1),
+                new NumberCard("red", 1));
+
+
+        List<String> specialPlayers = List.of("Martina", "Alex");
+        when(dealer.fullDeck()).thenReturn(specialDeck);
+        UUID specialMatchId = unoService.newMatch(specialPlayers);
+
+        JsonCard cardRed1 = new JsonCard("red", 1, "NumberCard", false);
+        JsonCard cardRed1Shout = new JsonCard("red", 1, "NumberCard", true);
+
+        for (int i = 0 ; i<5; i++){
+            System.out.print(i);
+            unoService.playCard(specialMatchId, "Martina", cardRed1);
+            unoService.playCard(specialMatchId, "Alex", cardRed1);
+        }
+        System.out.print("afuera");
+        unoService.playCard(specialMatchId, "Martina", cardRed1Shout);
+        unoService.playCard(specialMatchId, "Alex", cardRed1);
+        unoService.playCard(specialMatchId, "Martina", cardRed1);
+
+        assertThrows(RuntimeException.class, () -> unoService.playCard(specialMatchId, "Alex", cardRed1Shout));
+
+    }
 }

@@ -237,8 +237,8 @@ public class UnoControllerTest {
     public void test12DrawCardNoMatchPassed() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/draw/" ))
-                        .andDo(print())
-                        .andExpect(status().isNotFound());
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -247,16 +247,16 @@ public class UnoControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/draw/" + "/" + matchId))
-                        .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void test14ActiveCard() throws Exception {
         UUID matchId = UUID.randomUUID();
         Card card = new NumberCard("RED", 1);
-        JsonCard expectedControllerResponse = card.asJson(); // El controller transforma Card a JsonCard
+        JsonCard expectedControllerResponse = card.asJson();
 
-        Mockito.when(unoService.getPlayerHand(matchId)).thenReturn(List.of(card.asJson()));
+        Mockito.when(unoService.getActiveCard(matchId)).thenReturn(card);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/activecard/" + matchId )
@@ -310,7 +310,7 @@ public class UnoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(InvalidJsonCardcard)
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
 
     }
 
@@ -353,6 +353,22 @@ public class UnoControllerTest {
         mockMvc.perform(post("/play/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(winningCard)))
-                .andExpect(status().isOk()); // ajusta según tu controller
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void test21playWhenIsGameOver() throws Exception {
+        UUID matchId = UUID.randomUUID();
+        String player = "Alice";
+        JsonCard winningCard = new JsonCard("Red", 2, "NumberCard", false);
+
+        // Simular que playCard se ejecuta normalmente
+        Mockito.doThrow(new RuntimeException("GameOver")).when(unoService).playCard(matchId, player, winningCard);
+
+
+        // Act & Assert
+        mockMvc.perform(post("/play/" + matchId + "/" + player)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(winningCard)))
+                .andExpect(status().isBadRequest()); // Es este el error?
     }
 }
