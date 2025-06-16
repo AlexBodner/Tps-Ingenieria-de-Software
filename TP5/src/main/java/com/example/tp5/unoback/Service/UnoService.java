@@ -54,7 +54,7 @@ public class UnoService {
     // devuelve la mano del jugador que está en turno
     public List<JsonCard> getPlayerHand(UUID matchId) {
         Match match = getMatch(matchId);
-         return match.playerHand()                    // devuelve lista de cartas, quiero lista de jsons
+         return match.playerHand()
                  .stream()
                  .map(Card::asJson)
                  .collect(Collectors.toList());

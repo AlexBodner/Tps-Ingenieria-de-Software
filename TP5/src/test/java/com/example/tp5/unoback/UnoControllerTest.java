@@ -156,7 +156,7 @@ public class UnoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card))
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
 
         Mockito.verify(unoService).playCard(eq(matchId), eq(player), eq(card));
     }
@@ -177,7 +177,7 @@ public class UnoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(InvalidJsonCardcard)
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
 
     }
 
@@ -210,7 +210,7 @@ public class UnoControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/draw/" + matchId + "/" + player))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
 
         Mockito.verify(unoService).drawCard(eq(matchId), eq(player));
     }
@@ -334,7 +334,7 @@ public class UnoControllerTest {
         mockMvc.perform(post("/play/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(card)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -369,6 +369,6 @@ public class UnoControllerTest {
         mockMvc.perform(post("/play/" + matchId + "/" + player)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(winningCard)))
-                .andExpect(status().isBadRequest()); // Es este el error?
+                .andExpect(status().isConflict()); // Es este el error?
     }
 }

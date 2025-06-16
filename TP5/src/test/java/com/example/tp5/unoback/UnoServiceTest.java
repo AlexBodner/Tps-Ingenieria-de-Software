@@ -238,7 +238,7 @@ public class UnoServiceTest {
         JsonCard wild = new JsonCard("Blue", null, "WildCard", false);
 
         assertDoesNotThrow(() -> {
-                unoService.playCard(id, "Martina", wild);
+            unoService.playCard(id, "Martina", wild);
         });
     }
 
@@ -343,7 +343,7 @@ public class UnoServiceTest {
         JsonCard shoutedCard = new JsonCard("red", 1, "NumberCard", true);
 
         assertDoesNotThrow(() -> {
-                unoService.playCard(id, "Martina", shoutedCard);
+            unoService.playCard(id, "Martina", shoutedCard);
         });
     }
 

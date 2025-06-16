@@ -22,7 +22,6 @@ public class Match {
     }
 
     public Match(List<Card> deck, int cardsInHand, List<String> players) {
-        System.out.print(players);
         if (players == null){
             throw new IllegalArgumentException( "Must have at least 2 players" );
         }

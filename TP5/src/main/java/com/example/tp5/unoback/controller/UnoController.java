@@ -16,29 +16,20 @@ import java.util.UUID;
 
 @RestController
 public class UnoController {
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
     @ExceptionHandler(RuntimeException.class) public ResponseEntity<String> handleRuntime(RuntimeException exception) {
-        return ResponseEntity.badRequest().body( "Error: " + exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body( "Error: " + exception.getMessage());
     }
-
     @Autowired
     UnoService unoService;
-
     @GetMapping("/hola")
     public ResponseEntity<String> holaMundo() {
         return new ResponseEntity<>("Respuesta a Hola Mundo", HttpStatus.OK);
     }
-
     @PostMapping("newmatch") public ResponseEntity newMatch(@RequestParam List<String> players) {
         return ResponseEntity.ok(unoService.newMatch(players));
         //return  ResponseEntity.ok(UUID.randomUUID());
